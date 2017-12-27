@@ -1,0 +1,5 @@
+npm init
+npm install
+npm install nodemon -g
+nodemon
+npm install ejs --save

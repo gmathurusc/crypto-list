@@ -1,0 +1,27 @@
+<% include partials/header.ejs%>
+<table>
+    <thead>
+        <td>
+            Name
+        </td>
+        <td>
+            Market Cap
+        </td>
+        <td>
+            Price
+        </td>
+        <td>
+            Circulating Supply
+        </td>
+    </thead>
+    <% for (var i = 0; i < tickers.length; i++) { %>
+    <tr>
+        <td><%= tickers[i].name %></td>
+        <td><%= tickers[i].market_cap_usd %></td>
+        <td><%= tickers[i].price_usd %></td>
+        <td><%= tickers[i].total_supply %></td>
+    </tr>
+    <% } %>
+</table>
+
+<% include partials/footer.ejs%>

@@ -1,27 +1,34 @@
 <% include partials/header.ejs%>
-<table>
-    <thead>
-        <td>
-            Name
-        </td>
-        <td>
-            Market Cap
-        </td>
-        <td>
-            Price
-        </td>
-        <td>
-            Circulating Supply
-        </td>
-    </thead>
-    <% for (var i = 0; i < tickers.length; i++) { %>
-    <tr>
-        <td><%= tickers[i].name %></td>
-        <td><%= tickers[i].market_cap_usd %></td>
-        <td><%= tickers[i].price_usd %></td>
-        <td><%= tickers[i].total_supply %></td>
-    </tr>
-    <% } %>
-</table>
+<div class="container">
+    <div class="col-md-12">
+        <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">
+                        Name
+                    </th>
+                    <th scope="col">
+                        Market Cap
+                    </th>
+                    <th scope="col">
+                        Price
+                    </th>
+                    <th scope="col">
+                        Circulating Supply
+                    </th>
+                </tr>
+
+                </thead>
+                <% for (var i = 0; i < tickers.length; i++) { %>
+                <tr>
+                    <td scope="col"><%= tickers[i].name %></td>
+                    <td scope="col"><%= tickers[i].market_cap_usd %></td>
+                    <td scope="col"><%= tickers[i].price_usd %></td>
+                    <td scope="col"><%= tickers[i].total_supply %></td>
+                </tr>
+                <% } %>
+            </table>
+    </div>
+</div>
 
 <% include partials/footer.ejs%>

@@ -1,9 +1,18 @@
-npm install
-npm start
+## Getting Started
+```npm install```
 
+```npm start```
+
+To automate compiling install nodemon 
+
+```npm install -g nodemon```
+
+```nodemon```
+
+## For developers
 Make a pull request if you want any new feature.
 
-List of things that we are planning to work on 
+## List of things that we are planning to work on 
 
 1. Complex sort of all the parameters and limit
 2. Create lists of coins and share it to users
@@ -27,4 +36,6 @@ List of things that we are planning to work on
 20. Share bit.ly URL
 21. plot Metcalfe law on the network! https://medium.com/@alabs.ken/a-macro-mathematical-model-for-the-observed-value-of-digital-blockchain-networks-23cc8e0dc7ea
 
-https://secret-ridge-59416.herokuapp.com/
+## Website
+Visit : https://secret-ridge-59416.herokuapp.com/
+

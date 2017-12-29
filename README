@@ -1,3 +1,28 @@
-npm init
 npm install
-nodemon
+npm start
+
+Make a pull request if you want any new feature.
+
+List of things that we are planning to work on 
+
+1. Complex sort of all the parameters and limit
+2. Create lists of coins and share it to users
+3. And one week\month change
+4. Github activity
+5. Whitepaper review
+6. John Mcafee review?!
+7. Share it on facebook?!
+8. total number of coins
+9. Feedback
+10. Reddit kind feature request with http://www.passportjs.org
+11. List of markets
+12. Creating a Sentiment Analysis
+13. Google trends vs coin price
+14. Strategic Partnerships
+15. integrate with https://a-ads.com/ad_units/new ?!
+16. Price arbitrage data? the highest difference between markets and also considering exchange rates?
+17. hashtag and twitter scroll/ 
+18. Upcoming ICO's?!
+19 Some mining info?!
+20. Share bit.ly URL
+21. plot Metcalfe law on the network! https://medium.com/@alabs.ken/a-macro-mathematical-model-for-the-observed-value-of-digital-blockchain-networks-23cc8e0dc7ea

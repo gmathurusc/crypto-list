@@ -30,8 +30,6 @@ router.get('/', function (req, res) {
 
 router.get('/limit/', function (req, res) {
     var query = req.query.limit;
-    // console.log(currency);
-    // console.log(tickerURL+"?convert="+currency);
     request.get({ url: tickerURL+"?limit="+query},
         function(error, response, body) {
             res.render('index', {

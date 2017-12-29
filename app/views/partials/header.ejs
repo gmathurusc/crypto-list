@@ -10,54 +10,57 @@
             <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700">
             <link rel="stylesheet" href="css/header.css">
             <link rel="stylesheet" href="css/footer.css">
-            <link rel="stylesheet" href="css/bootstrap-select.min.css" />
+            <!--<link rel="stylesheet" href="css/bootstrap-select.min.css" />-->
             <script src="js/jquery.min.js"></script>
-            <script src="js/bootstrap-select.min.js"></script>
+            <!--<script src="js/bootstrap-select.min.js"></script>-->
             <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
             <!-- Latest compiled and minified CSS -->
             <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-table/1.11.1/bootstrap-table.min.css">
 
             <!-- Latest compiled and minified JavaScript -->
-            <script src="js/bootstrap-table.min.js"></script>
+            <script src="js/bootstrap-table.js"></script>
 
             <script src="js/bootstrap-table-filter-control.js"></script>
             <script src="js/bootstrap-table-multiple-sort.js"></script>
-
-
         </head>
     </head>
     <body>
-    <div>
-        <div class="header-blue">
-            <nav class="navbar navbar-default navigation-clean-search">
-                <div class="container">
-                    <div class="navbar-header"><a class="navbar-brand navbar-link" href="/">Crypto List</a>
-                    </div>
-                    <div class="collapse navbar-collapse" id="navcol-1">
-
-                        <!--<ul class="nav navbar-nav">-->
-                            <!--<li class="active" role="presentation"><a href="#">Link</a></li>-->
-                            <!--<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">Dropdown <span class="caret"></span></a>-->
-                                <!--<ul class="dropdown-menu" role="menu">-->
-                                    <!--<li role="presentation"><a href="#">First Item</a></li>-->
-                                    <!--<li role="presentation"><a href="#">Second Item</a></li>-->
-                                    <!--<li role="presentation"><a href="#">Third Item</a></li>-->
-                                <!--</ul>-->
-                            <!--</li>-->
-                        <!--</ul>-->
-                        <form class="navbar-form navbar-left" target="_self">
-                            <div class="form-group">
-                                <label class="control-label" for="search-field"><i class="glyphicon glyphicon-search"></i></label>
-                                <input class="form-control search-field" type="search" name="search" id="search-field">
-                            </div>
-                        </form>
-                        <p class="navbar-text navbar-right"><a class="navbar-link login" href="#">Log In</a> <a class="btn btn-default action-button" role="button" href="#">Sign Up</a></p>
-                    </div>
-                    <div class="sub-header"><p>Crypto Currency resources list</p>
-                    </div>
-                </div>
-
-            </nav>
-        </div>
+    <div class="container col-md-12 margin-left-70">
+        <h1>Crypto List</h1>
     </div>
+
+        <!--<div class="header-blue">-->
+            <!--<nav class="navbar navbar-default navigation-clean-search">-->
+                <!--<div class="container">-->
+                    <!--<div class="navbar-header col-md-12"><a class="navbar-brand navbar-link" href="/">Crypto List</a>-->
+                    <!--</div>-->
+                    <!--<div class="collapse navbar-collapse" id="navcol-1">-->
+
+                        <!--&lt;!&ndash;<ul class="nav navbar-nav">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<li class="active" role="presentation"><a href="#">Link</a></li>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false" href="#">Dropdown <span class="caret"></span></a>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<ul class="dropdown-menu" role="menu">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<li role="presentation"><a href="#">First Item</a></li>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<li role="presentation"><a href="#">Second Item</a></li>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<li role="presentation"><a href="#">Third Item</a></li>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<form class="navbar-form navbar-left" target="_self">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<div class="form-group">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<label class="control-label" for="search-field"><i class="glyphicon glyphicon-search"></i></label>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<input class="form-control search-field" type="search" name="search" id="search-field">&ndash;&gt;-->
+                            <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</form>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<p class="navbar-text navbar-right"><a class="navbar-link login" href="#">Log In</a> <a class="btn btn-default action-button" role="button" href="#">Sign Up</a></p>&ndash;&gt;-->
+                    <!--</div>-->
+                    <!--<div class="sub-header col-md-12"><p>Crypto Currency resources list</p>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+            <!--</nav>-->
+        <!--</div>-->
+    </div>
+
+    <% include github.ejs%>

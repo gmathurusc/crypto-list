@@ -1,13 +1,15 @@
 ## Getting Started
-```npm install```
-
-```npm start```
+```
+npm install
+npm start
+```
 
 To automate compiling install nodemon 
 
-```npm install -g nodemon```
-
-```nodemon```
+```
+npm install -g nodemon
+nodemon
+```
 
 ## For developers
 Make a pull request if you want any new feature.

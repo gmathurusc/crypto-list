@@ -4,22 +4,28 @@
         <div class="col-md-4">
             <form action="/limit/" method="get">
                 <%- include("partials/dropdown.ejs",{options: limit }) %>
-                <button class="active" type="submit">Filter</button>
+                <button class="btn btn-success" type="submit">Filter</button>
             </form>
         </div>
     </div>
 
     <div class="col-md-12 margin-top-30">
-        <table class="table table-striped">
+        <table id="table" class="table table-striped container"
+               data-pagination="true"
+               data-search="true"
+               data-toggle="table"
+               data-filter-control="true"
+               data-filter-show-clear= "true"
+               data-show-multi-sort="true" >
                 <thead>
                 <tr>
-                    <th scope="col" class="text-align-left">Rank</th>
-                    <th scope="col" class="text-align-right">Name</th>
-                    <th scope="col" class="text-align-right">Market Cap</th>
-                    <th scope="col" class="text-align-right">Price</th>
-                    <th scope="col" class="text-align-right">Circulating Supply</th>
-                    <th scope="col" class="text-align-right">Volume (24 hrs)</th>
-                    <th scope="col" class="text-align-right">% Change (24 hrs)</th>
+                    <th scope="col" class="text-align-left" data-sortable="true" data-filter-control="input" data-search="true">Rank</th>
+                    <th scope="col" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Name</th>
+                    <th scope="col" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Market Cap</th>
+                    <th scope="col" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Price</th>
+                    <th scope="col" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Circulating Supply</th>
+                    <th scope="col" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Volume (24 hrs)</th>
+                    <th scope="col" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">% Change (24 hrs)</th>
                 </tr>
 
                 </thead>

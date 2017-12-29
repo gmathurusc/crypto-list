@@ -22,16 +22,32 @@
                 </tr>
 
                 </thead>
+                <% 
+                var currencyFormatter = new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'USD',
+                minimumFractionDigits: 2,
+                });
+                var decimalFormatter = new Intl.NumberFormat('en-US', {
+                style: 'decimal',
+                minimumFractionDigits: 0,
+                });
+                var percentFormatter = new Intl.NumberFormat('en-US', {
+                style: 'percent'
+                });
+                %>
+
                 <% for (var i = 0; i < tickers.length; i++) { %>
+
                 <tr id="<%= tickers[i]['id'] %>">
                     <td class="text-align-left"><%= tickers[i]['rank'] %></td>
                     <td scope="col" class="text-align-right"><a href="/<%= tickers[i]['id'] %>"> <%= tickers[i]['name'] %></a></td>
-                    <td scope="col" class="text-align-right"><%= tickers[i]['market_cap_usd'] %></td>
-                    <td scope="col" class="text-align-right"><%= tickers[i]['price_usd'] %></td>
-                    <td scope="col" class="text-align-right"><%= tickers[i]['total_supply'] %></td>
-                    <td scope="col" class="text-align-right"><%= tickers[i]['24h_volume_usd'] %></td>
+                    <td scope="col" class="text-align-right"><%= decimalFormatter.format(tickers[i]['market_cap_usd']) %></td>
+                    <td scope="col" class="text-align-right"><%= currencyFormatter.format(tickers[i]['price_usd']) %></td>
+                    <td scope="col" class="text-align-right"><%= decimalFormatter.format(tickers[i]['total_supply']) %></td>
+                    <td scope="col" class="text-align-right"><%= decimalFormatter.format(tickers[i]['24h_volume_usd']) %></td>
                     <td scope="col" class="text-align-right <% if(tickers[i]['percent_change_24h'] < 0){ %> red<% } else{ %> green<% } %>">
-                        <%= tickers[i]['percent_change_24h'] %>
+                        <%= tickers[i]['percent_change_24h'] %> %
                     </td>
                 </tr>
                 <% } %>

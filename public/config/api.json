@@ -1,0 +1,5 @@
+{
+  "base": "https://api.coinmarketcap.com/v1",
+  "ticker": "/ticker/",
+  "global": "/global/"
+}

@@ -1,0 +1,5 @@
+<select class="selectpicker" data-show-subtext="true" name="limit" data-live-search="true">
+    <% for (var key in options) { %>
+    <option name="<%- key %>" value="<%- key %>"> <%- options[key] %> </option>
+    <% } %>
+</select>

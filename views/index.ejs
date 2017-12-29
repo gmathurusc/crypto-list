@@ -1,30 +1,39 @@
 <% include partials/header.ejs%>
 <div class="container margin-top-30">
-    <div class="col-md-12">
+    <div class="filter col-md-12">
+        <div class="col-md-4">
+            <form action="/limit/" method="get">
+                <%- include("partials/dropdown.ejs",{options: limit }) %>
+                <button class="active" type="submit">Filter</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-md-12 margin-top-30">
         <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">
-                        Name
-                    </th>
-                    <th scope="col">
-                        Market Cap
-                    </th>
-                    <th scope="col">
-                        Price
-                    </th>
-                    <th scope="col">
-                        Circulating Supply
-                    </th>
+                    <th scope="col" class="text-align-left">Rank</th>
+                    <th scope="col" class="text-align-right">Name</th>
+                    <th scope="col" class="text-align-right">Market Cap</th>
+                    <th scope="col" class="text-align-right">Price</th>
+                    <th scope="col" class="text-align-right">Circulating Supply</th>
+                    <th scope="col" class="text-align-right">Volume (24 hrs)</th>
+                    <th scope="col" class="text-align-right">% Change (24 hrs)</th>
                 </tr>
 
                 </thead>
                 <% for (var i = 0; i < tickers.length; i++) { %>
-                <tr>
-                    <td scope="col"><%= tickers[i].name %></td>
-                    <td scope="col"><%= tickers[i].market_cap_usd %></td>
-                    <td scope="col"><%= tickers[i].price_usd %></td>
-                    <td scope="col"><%= tickers[i].total_supply %></td>
+                <tr id="<%= tickers[i]['id'] %>">
+                    <td scope="col" class="text-align-left"><%= tickers[i]['rank'] %></td>
+                    <td scope="col" class="text-align-right"><a href="/<%= tickers[i]['id'] %>"> <%= tickers[i]['name'] %></a></td>
+                    <td scope="col" class="text-align-right"><%= tickers[i]['market_cap_usd'] %></td>
+                    <td scope="col" class="text-align-right"><%= tickers[i]['price_usd'] %></td>
+                    <td scope="col" class="text-align-right"><%= tickers[i]['total_supply'] %></td>
+                    <td scope="col" class="text-align-right"><%= tickers[i]['24h_volume_usd'] %></td>
+                    <td scope="col" class="text-align-right <% if(tickers[i]['percent_change_24h'] < 0){ %> red<% } else{ %> green<% } %>">
+                        <%= tickers[i]['percent_change_24h'] %>
+                    </td>
                 </tr>
                 <% } %>
             </table>

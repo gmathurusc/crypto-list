@@ -5,7 +5,8 @@
 }
 
 body {
-    color: #005172;
+    color: #ccc;
+    background-color: #1F2739;
 }
 
 #footer {
@@ -85,10 +86,14 @@ body {
     background-color: #dae5f4;
 }
 
+.table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
 .table th {
     color: white;
     font-size: 10px !important;
-    font-weight: bolder;
+    font-weight: 900;
     background-color: #005172;
     border: #b8d1f3 1px solid
 }
@@ -98,19 +103,17 @@ body {
 }
 
 .table td {
-    color: #002E41;
+    color: #005172;
     border: #b8d1f3 1px solid
 }
 
 input {
     display: block;
-    width: 100%;
     height: 34px;
-    padding: 6px 12px;
     font-size: 14px;
     line-height: 1.42857143;
     color: #555;
-    background-color: #fff;
+    background-color: #E8E8EE !important;
     background-image: none;
     border: 1px solid #ccc;
     border-radius: 4px;

@@ -43,7 +43,7 @@
            var priceMinValue = parseFloat($('#price_min').val());
            var priceMaxValue = parseFloat($('#price_max').val());
 
-           var supplyMinValue = parseFloat($('#min_min_supply').val());
+           var supplyMinValue = parseFloat($('#min_max_supply').val());
            var supplyMaxValue = parseFloat($('#max_max_supply').val());
 
            return isInRange(priceMinValue, priceMaxValue, item.price_usd) &&
@@ -67,7 +67,7 @@
    $(function () {
        $('#price_min').keyup(priceRangeFilter);
        $('#price_max').keyup(priceRangeFilter);
-       $('#min_min_supply').keyup(priceRangeFilter);
+       $('#min_max_supply').keyup(priceRangeFilter);
        $('#max_max_supply').keyup(priceRangeFilter);
        $('#hide-show-columns :checkbox').change(function () {
            var id = $(this).attr('id');

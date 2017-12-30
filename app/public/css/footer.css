@@ -119,13 +119,12 @@ body{
     height: 100%;
 }
 
-.content{
-   flex: 1 0 auto;
-   -webkit-flex: 1 0 auto;
-   min-height: 200px;
+#wrapper{
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
 
-#footer{
-   flex: 0 0 auto;
-   -webkit-flex: 0 0 auto;
+#content {
+    flex: 1;
 }

@@ -1,80 +1,123 @@
 <% include partials/header.ejs%>
 <div class="container margin-top-30">
-    <div class="margin-top-30">
-        <label> Min Price : </label>
-        <input type="text" id="price_min">
-        <label> Max Price : </label>
-        <input type="text" id="price_max">
-    </div>
-    <div class="col-md-12">
-        <table id="table" class="table table-striped container"
-               data-pagination="true"
-               data-search="true"
-               data-toggle="table"
-               data-show-column="true"
-               data-filter-control="true"
-               data-filter-show-clear= "true"
-               data-show-multi-sort="true"
-               data-page-size="25" >
-            <thead>
+   <div class="margin-top-30">
+      <div class="col-md-12">
+         <div class="col-md-2"><label> Min Price : </label> </div>
+         <div class="col-md-2"><input type="text" id="price_min"> </div>
+         <div class="col-md-2"> <label> Max Price : </label> </div>
+         <div class="col-md-2"> <input type="text" id="price_max"> </div>
+      </div>
+      <div class="col-md-12" style="top: 5px">
+         <div class="col-md-2"><label> Mix Max Supply : </label> </div>
+         <div class="col-md-2"><input type="text" id="min_max_supply"></div>
+         <div class="col-md-2"><label> Max Max Supply : </label></div>
+         <div class="col-md-2"><input type="text" id="max_max_supply"></div>
+      </div>
+   </div>
+   <div class="col-md-12">
+      <table id="table" class="table table-striped container"
+         data-pagination="true"
+         data-search="true"
+         data-toggle="table"
+         data-show-column="true"
+         data-filter-control="true"
+         data-filter-show-clear= "true"
+         data-show-multi-sort="true"
+         data-page-size="25" >
+         <thead>
             <tr>
-                <th scope="col" data-field="rank" class="text-align-left" data-sortable="true" data-filter-control="input" data-search="true">Rank</th>
-                <th scope="col" data-field="name" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Name</th>
-                <th scope="col" data-field="market_cap_usd" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Market Cap</th>
-                <th scope="col" data-field="price_usd" data-formatter="priceFormatter" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Price</th>
-                <th scope="col" data-field="total_supply" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Circulating Supply</th>
-                <th scope="col" data-field="24h_volume_usd" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Volume (24 hrs)</th>
-                <th scope="col" data-field="percent_change_24h" data-formatter="percentageFormatter" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">% Change (24 hrs)</th>
+               <th scope="col" data-field="rank" class="text-align-left" data-sortable="true" data-filter-control="input" data-search="true">Rank</th>
+               <th scope="col" data-field="name" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Name</th>
+               <th scope="col" data-field="symbol" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Symbol</th>
+               <th scope="col" data-field="market_cap_usd" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Market Cap</th>
+               <th scope="col" data-field="price_usd" data-formatter="priceFormatter" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Price</th>
+               <th scope="col" data-field="available_supply" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Available Supply</th>
+               <th scope="col" data-field="total_supply" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Total Supply</th>
+               <th scope="col" data-field="max_supply" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Max Supply</th>
+               <th scope="col" data-field="24h_volume_usd" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Volume (24 hrs)</th>
+               <th scope="col" data-field="percent_change_1h" data-formatter="percentageFormatter" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">% Change (1 hr)</th>
+               <th scope="col" data-field="percent_change_24h" data-formatter="percentageFormatter" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">% Change (24 hrs)</th>
+               <th scope="col" data-field="percent_change_7d" data-formatter="percentageFormatter" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">% Change (7 days)</th>
             </tr>
-            </thead>
-        </table>
-    </div>
+         </thead>
+      </table>
+   </div>
 </div>
 <script type="text/javascript">
-    var jsonData =  JSON.parse('<%-JSON.stringify(tickers)%>');
-    var $table = $('#table').bootstrapTable({data: jsonData});
+   var jsonData =  JSON.parse('<%-JSON.stringify(tickers)%>');
+   var $table = $('#table').bootstrapTable({data: jsonData});
+   
+   $(document).ready(function() {
+       $table.bootstrapTable('load', jsonData)
+   })
+   
+   function priceRangeFilter() {
+       var grepFunc = function (item) {
+           var priceMinValue = parseFloat($('#price_min').val());
+           var priceMaxValue = parseFloat($('#price_max').val());
 
-    $(document).ready(function() {
-        $table.bootstrapTable('load', jsonData)
-    })
+           var supplyMinValue = parseFloat($('#min_max_supply').val());
+           var supplyMaxValue = parseFloat($('#max_max_supply').val());
 
-    function priceRangeFilter() {
-        var grepFunc = function (item) {
-            var priceMinValue = parseFloat($('#price_min').val());
-            var priceMaxValue = parseFloat($('#price_max').val());
-            var isGreaterThanMin = (isNaN(priceMinValue) || priceMinValue == 0) || parseFloat(item.price_usd) >= parseFloat($('#price_min').val());
-            var isLesserThanMax = (isNaN(priceMaxValue) || priceMaxValue == 0) || parseFloat(item.price_usd) <= parseFloat($('#price_max').val());
-            return (isGreaterThanMin && isLesserThanMax);
-        };
-        $table.bootstrapTable('load', $.grep(jsonData, grepFunc));
-    }
+           return isInRange(priceMinValue, priceMaxValue, item.price_usd) &&
+           isInRange(supplyMinValue, supplyMaxValue, item.max_supply)
+       };
+       $table.bootstrapTable('load', $.grep(jsonData, grepFunc));
+   }
 
-    $(function () {
-        $('#price_min').keyup(priceRangeFilter);
-    });
+   function isInRange(minValue, maxValue, value) {
+    return greaterThanMinValue(minValue, value) && lesserThanMaxValue(maxValue, value)
+   }
 
-    $(function () {
-        $('#price_max').keyup(priceRangeFilter);
-    });
+   function greaterThanMinValue(minValue, value) {
+        return (isNaN(minValue) || minValue == 0) || parseFloat(value) >= minValue;
+   }
 
+   function lesserThanMaxValue(maxValue, value) {
+        return (isNaN(maxValue) || maxValue == 0) || parseFloat(value) <= maxValue;
+   }
+   
+   $(function () {
+       $('#price_min').keyup(priceRangeFilter);
+   });
+   
+   $(function () {
+       $('#price_max').keyup(priceRangeFilter);
+   });
+   
+   $(function () {
+       $('#min_max_supply').keyup(priceRangeFilter);
+   });
+   
+   $(function () {
+       $('#max_max_supply').keyup(priceRangeFilter);
+   });
+   
+   function priceFormatter(value) {
+       var currencyFormatterObject = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
+       return currencyFormatterObject.format(value);
+   }
 
-    function priceFormatter(value) {
-        var currencyFormatterObject = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
-        return currencyFormatterObject.format(value);
-    }
-
-    function decimalFormatter(value) {
-        var decimalFormatterObject = new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 0 });
-        return decimalFormatterObject.format(value);
-    }
-
-    function percentageFormatter(value) {
-        return value + ' %';
-    }
-
-    function numberHumanizer(value) {
-        return '$' + Humanize.compactInteger(value, 1);
-    }
-
+   function inversePriceFormatter(value) {
+       var currencyFormatterObject = new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2 });
+       return currencyFormatterObject.format(1/value);
+   }
+   
+   function decimalFormatter(value) {
+       var decimalFormatterObject = new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 0 });
+       return decimalFormatterObject.format(value);
+   }
+   
+   function percentageFormatter(value) {
+       return value + ' %';
+   }
+   
+   function numberHumanizer(value) {
+       if (value == null) {
+           return "-"
+       }
+       return '$' + Humanize.compactInteger(value, 1);
+   }
+   
 </script>
 <!--<% include partials/footer.ejs%>-->

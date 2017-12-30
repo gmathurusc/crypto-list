@@ -22,11 +22,12 @@
             sModal += '                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
             sModal += '                     <h4 class="modal-title" id="' + _id + 'Label">' + that.options.formatMultipleSort() + '</h4>';
             sModal += '                 </div>';
+            sModal += '                 <div class="margin-top-20 col-md-12"><p style="font-size: 20px;">Sort by</p></div>';
             sModal += '                 <div class="modal-body">';
             sModal += '                     <div class="bootstrap-table">';
             sModal += '                         <div class="fixed-table-toolbar">';
             sModal += '                             <div class="bars">';
-            sModal += '                                 <div id="toolbar">';
+            sModal += '                                 <div id="toolbar" class="margin-bottom-20">';
             sModal += '                                     <button id="add" type="button" class="btn btn-default"><i class="' + that.options.iconsPrefix + ' ' + that.options.icons.plus + '"></i> ' + that.options.formatAddLevel() + '</button>';
             sModal += '                                     <button id="delete" type="button" class="btn btn-default" disabled><i class="' + that.options.iconsPrefix + ' ' + that.options.icons.minus + '"></i> ' + that.options.formatDeleteLevel() + '</button>';
             sModal += '                                 </div>';
@@ -46,7 +47,8 @@
             sModal += '                         </div>';
             sModal += '                     </div>';
             sModal += '                 </div>';
-            sModal += '                 <div class="modal-footer">';
+            sModal += '                 <div id="hide-show-columns" class="modal-heading col-md-12"><p style="font-size: 20px;">Show/Hide Columns</p></div>';
+            sModal += '                 <div class="modal-footer margin-top-30">';
             sModal += '                     <button type="button" class="btn btn-default" data-dismiss="modal">' + that.options.formatCancel() + '</button>';
             sModal += '                     <button type="button" class="btn btn-primary">' + that.options.formatSort() + '</button>';
             sModal += '                 </div>';
@@ -343,11 +345,17 @@
         var $multiSortName = this.$sortModal.find('.multi-sort-name').last(),
             $multiSortOrder = this.$sortModal.find('.multi-sort-order').last();
 
+        var $hideShowColumns = this.$sortModal.find('#hide-show-columns');
+
         $.each(this.columns, function(i, column) {
             if (column.sortable === false || column.visible === false) {
                 return true;
             }
             $multiSortName.append('<option value="' + column.field + '">' + column.title + '</option>');
+
+            $hideShowColumns.append('<div class="pretty p-default p-round p-thick col-md-5 col-sm-6 col-xs-12" style="margin-top:5px;margin-bottom:5px;">' +
+                '<input type="checkbox" class="toggle-columns" id="' + column.field + '" checked />' +
+                '<div class="state p-primary-o"><label>' + column.title + '</label></div>');
         });
 
         $.each(this.options.formatSortOrders(), function(value, order) {
@@ -390,6 +398,4 @@
             this.$sortModal.find('#delete').attr('disabled', 'disabled');
         }
     };
-})(jQuery);/**
- * Created by Gaurav on 12/28/17.
- */
+})(jQuery);

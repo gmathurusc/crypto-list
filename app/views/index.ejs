@@ -1,7 +1,12 @@
 <% include partials/header.ejs%>
 <div class="container margin-top-30">
-
-    <div class="col-md-12 margin-top-30">
+    <div class="margin-top-30">
+        <label> Min Price : </label>
+        <input type="text" id="price_min">
+        <label> Max Price : </label>
+        <input type="text" id="price_max">
+    </div>
+    <div class="col-md-12">
         <table id="table" class="table table-striped container"
                data-pagination="true"
                data-search="true"
@@ -9,50 +14,67 @@
                data-show-column="true"
                data-filter-control="true"
                data-filter-show-clear= "true"
-               data-show-multi-sort="true" >
-                <thead>
-                <tr>
-                    <th data-field="rank" class="text-align-left" data-sortable="true" data-filter-control="input" data-search="true">Rank</th>
-                    <th scope="col" data-field="name" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Name</th>
-                    <th scope="col" data-field="market_cap" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Market Cap</th>
-                    <th scope="col" data-field="price" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Price</th>
-                    <th scope="col" data-field="circulating_supply" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Circulating Supply</th>
-                    <th scope="col" data-field="volume" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Volume (24 hrs)</th>
-                    <th scope="col" data-field="change" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">% Change (24 hrs)</th>
-                </tr>
-
-                </thead>
-                <% 
-                var currencyFormatter = new Intl.NumberFormat('en-US', {
-                style: 'currency',
-                currency: 'USD',
-                minimumFractionDigits: 2,
-                });
-                var decimalFormatter = new Intl.NumberFormat('en-US', {
-                style: 'decimal',
-                minimumFractionDigits: 0,
-                });
-                var percentFormatter = new Intl.NumberFormat('en-US', {
-                style: 'percent'
-                });
-                %>
-
-                <% for (var i = 0; i < tickers.length; i++) { %>
-
-                <tr id="<%= tickers[i]['id'] %>">
-                    <td class="text-align-left"><%= tickers[i]['rank'] %></td>
-                    <td scope="col" class="text-align-right"><a href="/<%= tickers[i]['id'] %>"> <%= tickers[i]['name'] %></a></td>
-                    <td scope="col" class="text-align-right"><%= decimalFormatter.format(tickers[i]['market_cap_usd']) %></td>
-                    <td scope="col" class="text-align-right"><%= currencyFormatter.format(tickers[i]['price_usd']) %></td>
-                    <td scope="col" class="text-align-right"><%= decimalFormatter.format(tickers[i]['total_supply']) %></td>
-                    <td scope="col" class="text-align-right"><%= decimalFormatter.format(tickers[i]['24h_volume_usd']) %></td>
-                    <td scope="col" class="text-align-right <% if(tickers[i]['percent_change_24h'] < 0){ %> red<% } else{ %> green<% } %>">
-                        <%= tickers[i]['percent_change_24h'] %> %
-                    </td>
-                </tr>
-                <% } %>
-            </table>
+               data-show-multi-sort="true"
+               data-page-size="25" >
+            <thead>
+            <tr>
+                <th scope="col" data-field="rank" class="text-align-left" data-sortable="true" data-filter-control="input" data-search="true">Rank</th>
+                <th scope="col" data-field="name" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Name</th>
+                <th scope="col" data-field="market_cap_usd" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Market Cap</th>
+                <th scope="col" data-field="price_usd" data-formatter="priceFormatter" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Price</th>
+                <th scope="col" data-field="total_supply" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Circulating Supply</th>
+                <th scope="col" data-field="24h_volume_usd" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Volume (24 hrs)</th>
+                <th scope="col" data-field="percent_change_24h" data-formatter="percentageFormatter" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">% Change (24 hrs)</th>
+            </tr>
+            </thead>
+        </table>
     </div>
 </div>
+<script type="text/javascript">
+    var jsonData =  JSON.parse('<%-JSON.stringify(tickers)%>');
+    var $table = $('#table').bootstrapTable({data: jsonData});
 
+    $(document).ready(function() {
+        $table.bootstrapTable('load', jsonData)
+    })
+
+    function priceRangeFilter() {
+        var grepFunc = function (item) {
+            var priceMinValue = parseFloat($('#price_min').val());
+            var priceMaxValue = parseFloat($('#price_max').val());
+            var isGreaterThanMin = (isNaN(priceMinValue) || priceMinValue == 0) || parseFloat(item.price_usd) >= parseFloat($('#price_min').val());
+            var isLesserThanMax = (isNaN(priceMaxValue) || priceMaxValue == 0) || parseFloat(item.price_usd) <= parseFloat($('#price_max').val());
+            return (isGreaterThanMin && isLesserThanMax);
+        };
+        $table.bootstrapTable('load', $.grep(jsonData, grepFunc));
+    }
+
+    $(function () {
+        $('#price_min').keyup(priceRangeFilter);
+    });
+
+    $(function () {
+        $('#price_max').keyup(priceRangeFilter);
+    });
+
+
+    function priceFormatter(value) {
+        var currencyFormatterObject = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
+        return currencyFormatterObject.format(value);
+    }
+
+    function decimalFormatter(value) {
+        var decimalFormatterObject = new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 0 });
+        return decimalFormatterObject.format(value);
+    }
+
+    function percentageFormatter(value) {
+        return value + ' %';
+    }
+
+    function numberHumanizer(value) {
+        return '$' + Humanize.compactInteger(value, 1);
+    }
+
+</script>
 <!--<% include partials/footer.ejs%>-->

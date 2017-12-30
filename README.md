@@ -12,7 +12,8 @@ nodemon
 ```
 
 ## For developers
-Make a pull request if you want any new feature.
+1. Add an issue for any new feature.
+2. Make a pull request.
 
 ## List of things that we are planning to work on 
 

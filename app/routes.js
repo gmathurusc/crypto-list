@@ -20,7 +20,7 @@ router.get('/', function (req, res) {
     request.get({ url: tickerURL},
         function(error, response, body) {
             res.render('index', {
-                title : 'Home',
+                title : 'Crypto List',
                 tickers : JSON.parse(body),
                 currency : currency,
                 limit : limit
@@ -28,38 +28,38 @@ router.get('/', function (req, res) {
         });
 });
 
-router.get('/limit/', function (req, res) {
-    var query = req.query.limit;
-    request.get({ url: tickerURL+"?limit="+query},
-        function(error, response, body) {
-            res.render('index', {
-                title : 'Limit',
-                tickers : JSON.parse(body),
-                limit : limit
-            })
-        });
-});
-
-router.get('/currency/', function (req, res) {
-    var currency = req.query.currency;
-    // console.log(currency);
-    // console.log(tickerURL+"?convert="+currency);
-    request.get({ url: tickerURL+"?convert="+currency},
-        function(error, response, body) {
-            res.render('index', {
-                title : 'Home',
-                tickers : JSON.parse(body),
-                currency : currency,
-            })
-        });
-});
-
-
-
-//About
-router.get('/about', function(req, res) {
-    res.send('About us');
-});
+// router.get('/limit/', function (req, res) {
+//     var query = req.query.limit;
+//     request.get({ url: tickerURL+"?limit="+query},
+//         function(error, response, body) {
+//             res.render('index', {
+//                 title : 'Limit',
+//                 tickers : JSON.parse(body),
+//                 limit : limit
+//             })
+//         });
+// });
+//
+// router.get('/currency/', function (req, res) {
+//     var currency = req.query.currency;
+//     // console.log(currency);
+//     // console.log(tickerURL+"?convert="+currency);
+//     request.get({ url: tickerURL+"?convert="+currency},
+//         function(error, response, body) {
+//             res.render('index', {
+//                 title : 'Home',
+//                 tickers : JSON.parse(body),
+//                 currency : currency,
+//             })
+//         });
+// });
+//
+//
+//
+// //About
+// router.get('/about', function(req, res) {
+//     res.send('About us');
+// });
 
 
 module.exports = router;

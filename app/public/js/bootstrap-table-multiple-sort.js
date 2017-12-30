@@ -9,6 +9,7 @@
     'use strict';
 
     var isSingleSort = false;
+    var isHideShowColumnsDivAppended = false;
 
     var showSortModal = function(that) {
         var _selector = that.$sortModal.selector,
@@ -344,7 +345,6 @@
 
         var $multiSortName = this.$sortModal.find('.multi-sort-name').last(),
             $multiSortOrder = this.$sortModal.find('.multi-sort-order').last();
-
         var $hideShowColumns = this.$sortModal.find('#hide-show-columns');
 
         $.each(this.columns, function(i, column) {
@@ -353,10 +353,13 @@
             }
             $multiSortName.append('<option value="' + column.field + '">' + column.title + '</option>');
 
-            $hideShowColumns.append('<div class="pretty p-default p-round p-thick col-md-5 col-sm-6 col-xs-12" style="margin-top:5px;margin-bottom:5px;">' +
-                '<input type="checkbox" class="toggle-columns" id="' + column.field + '" checked />' +
-                '<div class="state p-primary-o"><label>' + column.title + '</label></div>');
+            if(!isHideShowColumnsDivAppended) {
+                $hideShowColumns.append('<div class="pretty p-default p-round p-thick col-md-5 col-sm-6 col-xs-12" style="margin-top:5px;margin-bottom:5px;">' +
+                    '<input type="checkbox" class="toggle-columns" id="' + column.field + '" checked />' +
+                    '<div class="state p-primary-o"><label>' + column.title + '</label></div>');
+            }
         });
+        isHideShowColumnsDivAppended = true;
 
         $.each(this.options.formatSortOrders(), function(value, order) {
             $multiSortOrder.append('<option value="' + value + '">' + order + '</option>');

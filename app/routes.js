@@ -17,11 +17,11 @@ var globalURL = api.base + api.global;
 //Home
 router.get('/', function (req, res) {
 
-    request.get({ url: tickerURL},
+    request.get({ url: tickerURL+"?limit=1000"},
         function(error, response, body) {
             res.render('index', {
                 title : 'Crypto List',
-                tickers : JSON.parse(body),
+                tickers : body,
                 currency : currency,
                 limit : limit
             })

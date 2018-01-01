@@ -1,6 +1,5 @@
 <% include partials/header.ejs%>
-<div id="content" class="main-container">
-   <% include partials/range-filter.ejs%>
+<div id="content" class="main-container margin-top-70">
    <div class="col-md-12 table-responsive">
       <table id="table" class="table"
          data-pagination="true"
@@ -11,6 +10,7 @@
          data-filter-show-clear= "true"
          data-show-multi-sort="true"
          data-page-size="25" >
+          <% include partials/range-filter.ejs%>
          <thead>
             <tr>
                <th scope="col" data-field="rank" class="text-align-left" data-sortable="true" data-filter-control="input" data-search="true">Rank</th>
@@ -37,38 +37,8 @@
    $(document).ready(function() {
        $table.bootstrapTable('load', jsonData)
    })
-   
-   function priceRangeFilter() {
-       var grepFunc = function (item) {
-           var priceMinValue = parseFloat($('#price_min').val());
-           var priceMaxValue = parseFloat($('#price_max').val());
 
-           var supplyMinValue = parseFloat($('#min_max_supply').val());
-           var supplyMaxValue = parseFloat($('#max_max_supply').val());
-
-           return isInRange(priceMinValue, priceMaxValue, item.price_usd) &&
-           isInRange(supplyMinValue, supplyMaxValue, item.max_supply)
-       };
-       $table.bootstrapTable('load', $.grep(jsonData, grepFunc));
-   }
-
-   function isInRange(minValue, maxValue, value) {
-    return greaterThanMinValue(minValue, value) && lesserThanMaxValue(maxValue, value)
-   }
-
-   function greaterThanMinValue(minValue, value) {
-        return (isNaN(minValue) || minValue == 0) || parseFloat(value) >= minValue;
-   }
-
-   function lesserThanMaxValue(maxValue, value) {
-        return (isNaN(maxValue) || maxValue == 0) || parseFloat(value) <= maxValue;
-   }
-   
    $(function () {
-       $('#price_min').keyup(priceRangeFilter);
-       $('#price_max').keyup(priceRangeFilter);
-       $('#min_max_supply').keyup(priceRangeFilter);
-       $('#max_max_supply').keyup(priceRangeFilter);
        $('#hide-show-columns :checkbox').change(function () {
            var id = $(this).attr('id');
            if (this.checked) {
@@ -78,7 +48,7 @@
            }
        })
    });
-   
+
    function priceFormatter(value) {
        var currencyFormatterObject = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
        return currencyFormatterObject.format(value);

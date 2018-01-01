@@ -94,7 +94,7 @@ body {
     color: white;
     font-size: 10px !important;
     font-weight: 900;
-    background-color: #005172;
+    background-color: slategrey;
     border: #b8d1f3 1px solid
 }
 
@@ -126,4 +126,7 @@ input {
 
 .range-filter {
     text-align: right;
+    float: right;
+    margin-top: 10px;
+    margin-left: 1px;
 }

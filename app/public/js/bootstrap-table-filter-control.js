@@ -681,7 +681,8 @@
                 item.value = '';
             });
 
-            setValues(that);
+            clearRangeFilter();
+                setValues(that);
 
             // Clear each type of filter if it exists.
             // Requires the body to reload each time a type of filter is found because we never know

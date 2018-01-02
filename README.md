@@ -28,7 +28,7 @@ nodemon
 9. Feedback
 10. Reddit kind feature request with http://www.passportjs.org
 11. List of markets
-12. Creating a Sentiment Analysis
+12. Creating a Sentiment Analysis. Ex. : https://www.sitepoint.com/creating-sentiment-analysis-application-using-node-js/
 13. Google trends vs coin price
 14. Strategic Partnerships
 15. integrate with https://a-ads.com/ad_units/new ?!

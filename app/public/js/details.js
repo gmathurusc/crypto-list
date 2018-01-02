@@ -1,7 +1,7 @@
 $(document).ready(function() {
     $('#table').on('click','.details',function () {
         var currency = ($(this).text()).toLowerCase();
-        if(currency != undefined){
+        if(currency != undefined && currency != "name"){
             $.ajax({
                 url: '/currency/details/?value='+currency,
                 type: 'GET',

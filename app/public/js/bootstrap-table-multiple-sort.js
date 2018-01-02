@@ -47,8 +47,8 @@
             sModal += '                             </table>';
             sModal += '                         </div>';
             sModal += '                     </div>';
+            sModal += '                     <div id="hide-show-columns" class="modal-heading col-md-12"><p style="font-size: 20px;">Show/Hide Columns</p></div>';
             sModal += '                 </div>';
-            sModal += '                 <div id="hide-show-columns" class="modal-heading col-md-12"><p style="font-size: 20px;">Show/Hide Columns</p></div>';
             sModal += '                 <div class="modal-footer margin-top-30">';
             sModal += '                     <button type="button" class="btn btn-default" data-dismiss="modal">' + that.options.formatCancel() + '</button>';
             sModal += '                     <button type="button" class="btn btn-primary">' + that.options.formatSort() + '</button>';

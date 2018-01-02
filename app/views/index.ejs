@@ -1,7 +1,7 @@
 <% include partials/header.ejs%>
 <div id="content" class="main-container margin-top-70">
    <div class="col-md-12 table-responsive">
-      <table id="table" class="table"
+      <table id="table" class="table table-responsive"
          data-pagination="true"
          data-search="true"
          data-toggle="table"
@@ -13,29 +13,32 @@
           <% include partials/range-filter.ejs%>
          <thead>
             <tr>
-               <th scope="col" data-field="rank" class="text-align-left" data-sortable="true" data-filter-control="input" data-search="true">Rank</th>
-               <th scope="col" data-field="name" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Name</th>
-               <th scope="col" data-field="symbol" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Symbol</th>
-               <th scope="col" data-field="market_cap_usd" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Market Cap</th>
-               <th scope="col" data-field="price_usd" data-formatter="priceFormatter" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Price</th>
-               <th scope="col" data-field="available_supply" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Available Supply</th>
-               <th scope="col" data-field="total_supply" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Total Supply</th>
-               <th scope="col" data-field="max_supply" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Max Supply</th>
-               <th scope="col" data-field="24h_volume_usd" data-formatter="numberHumanizer" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">Volume (24 hrs)</th>
-               <th scope="col" data-field="percent_change_1h" data-formatter="percentageFormatter" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">% Change (1 hr)</th>
-               <th scope="col" data-field="percent_change_24h" data-formatter="percentageFormatter" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">% Change (24 hrs)</th>
-               <th scope="col" data-field="percent_change_7d" data-formatter="percentageFormatter" class="text-align-right" data-sortable="true" data-filter-control="input" data-search="true">% Change (7 days)</th>
+               <th scope="col" data-field="rank" class="text-align-left optional rank" data-sortable="true" data-filter-control="input" data-search="true">Rank</th>
+               <th scope="col" data-field="name" class="text-align-right required name details" data-sortable="true" data-filter-control="input" data-search="true" style="">Name</th>
+               <th scope="col" data-field="symbol" class="text-align-right optional symbol" data-sortable="true" data-filter-control="input" data-search="true">Symbol</th>
+               <th scope="col" data-field="market_cap_usd" class="text-align-right optional market_cap_usd" data-sortable="true" data-formatter="numberHumanizer" data-filter-control="input" data-search="true">Market Cap</th>
+               <th scope="col" data-field="price_usd" class="text-align-right required price_usd" data-formatter="priceFormatter" data-sortable="true" data-filter-control="input" data-search="true">Price</th>
+               <th scope="col" data-field="available_supply" class="text-align-right optional available_supply" data-formatter="numberHumanizer" data-sortable="true" data-filter-control="input" data-search="true">Available Supply</th>
+               <th scope="col" data-field="total_supply" class="text-align-right optional total_supply"  data-formatter="numberHumanizer" data-sortable="true" data-filter-control="input" data-search="true">Total Supply</th>
+               <th scope="col" data-field="max_supply" class="text-align-right optional max_supply" data-formatter="numberHumanizer" data-sortable="true" data-filter-control="input" data-search="true">Max Supply</th>
+               <th scope="col" data-field="24h_volume_usd" class="text-align-right required 24h_volume_usd" data-formatter="numberHumanizer" data-sortable="true" data-filter-control="input" data-search="true">Volume (24 hrs)</th>
+               <th scope="col" data-field="percent_change_1h" class="text-align-right optional percent_change_1h" data-formatter="percentageFormatter" data-sortable="true" data-filter-control="input" data-search="true">% Change (1 hr)</th>
+               <th scope="col" data-field="percent_change_24h" class="text-align-right required percent_change_24h" data-formatter="percentageFormatter" data-sortable="true" data-filter-control="input" data-search="true">% Change (24 hrs)</th>
+               <th scope="col" data-field="percent_change_7d" class="text-align-right optional percent_change_7d" data-formatter="percentageFormatter" data-sortable="true" data-filter-control="input" data-search="true">% Change (7 days)</th>
+                <!--<th scope="col" data-field="symbol" style="display: none !important; text-decoration: underline !important; cursor: pointer" class="text-align-right details" >Details</th>-->
             </tr>
          </thead>
       </table>
    </div>
 </div>
+<% include details.ejs%>
 <script type="text/javascript">
    var jsonData =  JSON.parse(<%-JSON.stringify(tickers)%>);
    var $table = $('#table');
    
    $(document).ready(function() {
-       $table.bootstrapTable('load', jsonData)
+       $table.bootstrapTable('load', jsonData);
+       windowSizeActions();
    })
 
    $(function () {
@@ -74,6 +77,35 @@
        }
        return '$' + Humanize.compactInteger(value, 1);
    }
+</script>
+
+<script>
+    $( window ).resize(function() {
+        windowSizeActions();
+    });
+
+    function windowSizeActions() {
+        if ($(window).width() < 800) {
+            $('.modal-content').css("width","100%");
+            $('#table').addClass('small-font');
+            $('th.optional').each(function () {
+                var field = $(this).data('field');
+                $table.bootstrapTable('hideColumn', field);
+            })
+            $('#hide-show-columns').addClass('hide-mobile');
+
+        }
+
+        else {
+            $('.modal-content').css("width","120%");
+            $('#table').removeClass('small-font');
+            $('th.optional').each(function () {
+                var field = $(this).data('field');
+                $table.bootstrapTable('showColumn', field);
+            })
+            $('#hide-show-columns').removeClass('hide-mobile');
+        }
+    }
 </script>
 
 <% include partials/footer.ejs%>

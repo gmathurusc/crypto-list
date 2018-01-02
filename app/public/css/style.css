@@ -130,3 +130,34 @@ input {
     margin-top: 10px;
     margin-left: 1px;
 }
+
+.small-font {
+    font-size: 10px;
+}
+
+.modal-footer {
+    border-top: none;
+}
+
+#currency-detail-modal-title {
+    text-transform: capitalize;
+}
+
+#currency-detail-body {
+    background-color: #009ECE;
+    color:#005172;
+    font-weight: bolder;
+}
+
+.hide-mobile {
+    display: none;
+}
+
+.table>thead>tr>th {
+    vertical-align: top !important;
+}
+
+.details {
+    text-decoration: underline !important;
+    cursor: pointer !important;
+}

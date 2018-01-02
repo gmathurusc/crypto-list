@@ -40,19 +40,14 @@ router.get('/', function (req, res) {
 //         });
 // });
 //
-// router.get('/currency/', function (req, res) {
-//     var currency = req.query.currency;
-//     // console.log(currency);
-//     // console.log(tickerURL+"?convert="+currency);
-//     request.get({ url: tickerURL+"?convert="+currency},
-//         function(error, response, body) {
-//             res.render('index', {
-//                 title : 'Home',
-//                 tickers : JSON.parse(body),
-//                 currency : currency,
-//             })
-//         });
-// });
+router.get('/currency/details/', function (req, res) {
+    console.log(req.query.value);
+    var currency = req.query.value.replace(/ /g,"-");
+    request.get({ url: tickerURL+"/"+currency},
+        function(error, response, body) {
+            res.send(body);
+        });
+});
 //
 //
 //

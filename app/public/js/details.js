@@ -29,10 +29,7 @@ $(document).ready(function() {
     });
 
     $(function () {
-        $('#currency-detail-clear-btn-top-right').click(function () {
-            Custombox.modal.close();
-        })
-        $('#currency-detail-clear-btn-bottom-right').click(function () {
+        $('#currency-detail-clear-btn-top-right, #currency-detail-clear-btn-bottom-right').click(function () {
             Custombox.modal.close();
         })
     })

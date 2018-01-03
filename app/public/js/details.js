@@ -19,7 +19,7 @@ $(document).ready(function() {
                             target: '#currency-detail',
                         }
                     });
-                    $('#currency-detail-modal-title').html(currency);
+                    $('#currency-detail-modal-title').html(currency.toUpperCase());
                     modal.open();
                 },
                 error: function(e) {

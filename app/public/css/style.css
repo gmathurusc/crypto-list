@@ -157,7 +157,7 @@ input {
     vertical-align: top !important;
 }
 
-.details {
+tr.details {
     text-decoration: underline !important;
     cursor: pointer !important;
 }

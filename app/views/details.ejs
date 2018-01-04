@@ -9,7 +9,8 @@
                 <h4 id="currency-detail-modal-title"></h4>
             </div>
             <div class="modal-body" id="currency-detail-body" style="text-align: left;">
-                <div class="container-fluid">
+                <%include partials/loading.ejs%>
+                <div class="container-fluid" id="container-detail" style="display: none">
                     <div class="row" style="">
                         <span class="col-xs-5" style="color: black">Rank</span>
                         <span class="col-xs-5"  id="currency-detail-rank"> </span>

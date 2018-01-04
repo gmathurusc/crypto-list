@@ -1,16 +1,10 @@
-.twitter-timeline {
-    height: 300px !important;
-    width: 300px !important;
-    margin-left: 50px;
-}
-
 body {
     color: #ccc;
     background-color: #1F2739;
 }
 
 #footer {
-    bottom: 0px;
+    bottom: 0;
 }
 
 .title {
@@ -132,7 +126,7 @@ input {
 }
 
 .small-font {
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .modal-footer {
@@ -205,3 +199,14 @@ td.details {
     fill: rgba(0, 0, 0, 0.2);
 }
 
+.red {
+    color: red !important;
+}
+
+.green {
+    color: green !important;
+}
+
+.gold {
+    color: darkgoldenrod !important;
+}

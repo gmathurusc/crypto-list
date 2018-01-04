@@ -14,7 +14,7 @@
          <thead>
             <tr>
                <th scope="col" data-field="rank" class="text-align-left optional rank" data-sortable="true" data-filter-control="input" data-search="true">Rank</th>
-               <th scope="col" data-field="name" class="text-align-right required name details" data-sortable="true" data-filter-control="input" data-search="true" style="">Name</th>
+               <th scope="col" data-field="name" class="text-align-left required name details" data-sortable="true" data-filter-control="input" data-formatter="addLogo" data-search="true">Name</th>
                <th scope="col" data-field="symbol" class="text-align-right optional symbol" data-sortable="true" data-filter-control="input" data-search="true">Symbol</th>
                <th scope="col" data-field="market_cap_usd" class="text-align-right optional market_cap_usd" data-sortable="true" data-formatter="numberHumanizer" data-filter-control="input" data-search="true">Market Cap</th>
                <th scope="col" data-field="price_usd" class="text-align-right required price_usd" data-formatter="priceFormatter" data-sortable="true" data-filter-control="input" data-search="true">Price</th>
@@ -22,9 +22,9 @@
                <th scope="col" data-field="total_supply" class="text-align-right optional total_supply"  data-formatter="numberHumanizer" data-sortable="true" data-filter-control="input" data-search="true">Total Supply</th>
                <th scope="col" data-field="max_supply" class="text-align-right optional max_supply" data-formatter="numberHumanizer" data-sortable="true" data-filter-control="input" data-search="true">Max Supply</th>
                <th scope="col" data-field="24h_volume_usd" class="text-align-right optional 24h_volume_usd" data-formatter="numberHumanizer" data-sortable="true" data-filter-control="input" data-search="true">Volume(24 hrs)</th>
-               <th scope="col" data-field="percent_change_1h" class="text-align-right optional percent_change_1h" data-formatter="percentageFormatter" data-sortable="true" data-filter-control="input" data-search="true">% Change(1 hr)</th>
-               <th scope="col" data-field="percent_change_24h" class="text-align-right required percent_change_24h" data-formatter="percentageFormatter" data-sortable="true" data-filter-control="input" data-search="true">% Change(24 hrs)</th>
-               <th scope="col" data-field="percent_change_7d" class="text-align-right optional percent_change_7d" data-formatter="percentageFormatter" data-sortable="true" data-filter-control="input" data-search="true">% Change(7 days)</th>
+               <th scope="col" data-field="percent_change_1h" class="text-align-right optional percent_change_1h" data-cell-style="cellStyle" data-formatter="percentageFormatter" data-sortable="true" data-filter-control="input" data-search="true">% Change(1 hr)</th>
+               <th scope="col" data-field="percent_change_24h" class="text-align-right required percent_change_24h" data-cell-style="cellStyle" data-formatter="percentageFormatter" data-sortable="true" data-filter-control="input" data-search="true">% Change(24 hrs)</th>
+               <th scope="col" data-field="percent_change_7d" class="text-align-right optional percent_change_7d" data-cell-style="cellStyle" data-formatter="percentageFormatter" data-sortable="true" data-filter-control="input" data-search="true">% Change(7 days)</th>
             </tr>
          </thead>
       </table>
@@ -37,6 +37,9 @@
    
    $(document).ready(function() {
        $table.bootstrapTable('load', jsonData);
+       $table.bootstrapTable('mergeCells', {
+           col : ['name']
+       })
        windowSizeActions();
    })
 
@@ -50,32 +53,6 @@
            }
        })
    });
-
-   function priceFormatter(value) {
-       var currencyFormatterObject = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 });
-       return currencyFormatterObject.format(value);
-   }
-
-   function inversePriceFormatter(value) {
-       var currencyFormatterObject = new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 2 });
-       return currencyFormatterObject.format(1/value);
-   }
-   
-   function decimalFormatter(value) {
-       var decimalFormatterObject = new Intl.NumberFormat('en-US', { style: 'decimal', minimumFractionDigits: 0 });
-       return decimalFormatterObject.format(value);
-   }
-   
-   function percentageFormatter(value) {
-       return value + ' %';
-   }
-   
-   function numberHumanizer(value) {
-       if (value == null) {
-           return "-"
-       }
-       return '$' + Humanize.compactInteger(value, 1);
-   }
 </script>
 
 <% include partials/footer.ejs%>

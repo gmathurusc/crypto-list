@@ -41,8 +41,7 @@ router.get('/', function (req, res) {
 // });
 //
 router.get('/currency/details/', function (req, res) {
-    console.log(req.query.value);
-    var currency = req.query.value.replace(/ /g,"-");
+    var currency = req.query.value.replace(/\s/g,"-");
     request.get({ url: tickerURL+"/"+currency},
         function(error, response, body) {
             res.send(body);

@@ -2696,7 +2696,7 @@
 
     BootstrapTable.prototype.mergeCells = function (options) {
         var row = options.index,
-            col = $.inArray(options.field, this.getVisibleFields()),
+            col = $.inArray('name', this.getVisibleFields()),
             rowspan = options.rowspan || 1,
             colspan = options.colspan || 1,
             i, j,

@@ -1,5 +1,9 @@
 $(document).ready(function() {
     $('#table').on('click','.details',function () {
+        $('#currency-detail-modal-title').html('Loading...');
+        $('#container-detail').hide();
+        $('#container-loading').show();
+        $('#currency-detail').modal();
         var currency = ($(this).text()).toLowerCase();
         if(currency != undefined && currency != "name"){
             $.ajax({
@@ -11,26 +15,13 @@ $(document).ready(function() {
                     $.each( json[0], function( key, value ) {
                         $('#currency-detail-'+key).text(value);
                     });
-
-                    $('#currency-detail').modal();
-                    var modal = new Custombox.modal({
-                        content: {
-                            effect: 'fadein',
-                            target: '#currency-detail',
-                        }
-                    });
+                    $('#container-loading').hide();
                     $('#currency-detail-modal-title').html(currency.toUpperCase());
-                    modal.open();
+                    $('#container-detail, #currency-detail-modal-title').show();
                 },
                 error: function(e) {
                 }
             });
         }
     });
-
-    $(function () {
-        $('#currency-detail-clear-btn-top-right, #currency-detail-clear-btn-bottom-right').click(function () {
-            Custombox.modal.close();
-        })
-    })
 });

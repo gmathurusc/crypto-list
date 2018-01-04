@@ -157,7 +157,51 @@ input {
     vertical-align: top !important;
 }
 
-tr.details {
+td.details {
     text-decoration: underline !important;
     cursor: pointer !important;
 }
+
+/* Animation */
+@-webkit-keyframes rotate {
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+@keyframes rotate {
+    to {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+/* Loading Icon */
+.loading {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+.loading__ring {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+}
+.loading__ring:first-child {
+    -webkit-transform: skew(30deg, 20deg);
+    transform: skew(30deg, 20deg);
+}
+.loading__ring:last-child {
+    -webkit-transform: skew(-30deg, -20deg) scale(-1, 1);
+    transform: skew(-30deg, -20deg) scale(-1, 1);
+}
+.loading__ring:last-child svg {
+    -webkit-animation-delay: -0.5s;
+    animation-delay: -0.5s;
+}
+.loading__ring svg {
+    -webkit-animation: rotate 1s linear infinite;
+    animation: rotate 1s linear infinite;
+    fill: rgba(0, 0, 0, 0.2);
+}
+

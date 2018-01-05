@@ -156,6 +156,11 @@ td.details {
     cursor: pointer !important;
 }
 
+td.symbol {
+    text-decoration: underline !important;
+    cursor: pointer !important;
+}
+
 /* Animation */
 @-webkit-keyframes rotate {
     to {

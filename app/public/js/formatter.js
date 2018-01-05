@@ -44,7 +44,7 @@ function cellStyle(value, row, index) {
 }
 
 function addLogo(value, row) {
-    var currency = value.replace(/ /g,"");
-    return '<p style="float: left">' + value + '</p><br><br><p style="float: left" class="sprite small_coin_logo sprite-'+currency.toLowerCase()+'"><br></p>' +
+    var currency = value.replace(/\s/g,"");
+    return '<p style="float: left; text-decoration: underline">' + value + '</p><br><br><p style="float: left" class="sprite small_coin_logo sprite-'+currency.toLowerCase()+'"><br></p>' +
         '';
 }

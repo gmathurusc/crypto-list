@@ -30,18 +30,15 @@
       </table>
    </div>
 </div>
-<% include details.ejs%>
+<% include modals.ejs%>
 <script type="text/javascript">
    var jsonData =  JSON.parse(<%-JSON.stringify(tickers)%>);
    var $table = $('#table');
    
    $(document).ready(function() {
        $table.bootstrapTable('load', jsonData);
-       $table.bootstrapTable('mergeCells', {
-           col : ['name']
-       })
        windowSizeActions();
-   })
+   });
 
    $(function () {
        $('#hide-show-columns :checkbox').change(function () {

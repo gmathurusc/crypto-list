@@ -1,5 +1,11 @@
 {
-  "base": "https://api.coinmarketcap.com/v1",
-  "ticker": "/ticker/",
-  "global": "/global/"
+  "coinmarketcap" : {
+    "base": "https://api.coinmarketcap.com/v1",
+    "ticker": "/ticker/",
+    "global": "/global/"
+  },
+  "coincap" : {
+    "base" : "http://coincap.io",
+    "history_7day" : "/history/7day"
+  }
 }

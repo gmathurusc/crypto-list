@@ -3,7 +3,7 @@ $(document).ready(function() {
         var currency = ($(this).text()).toLowerCase();
         if(currency != undefined && currency != "name"){
             $('#currency-detail-modal-title').html('Loading...');
-            $('#container-detail').hide();
+            $('#container-detail, #container-detail-error').hide();
             $('#container-loading').show();
             $('#currency-detail').modal();
             $.ajax({

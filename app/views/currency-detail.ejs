@@ -1,0 +1,128 @@
+<% include partials/header.ejs%>
+<div id="content" class="main-container margin-top-70">
+    <div class="col-md-12" id="currency-detail">
+        <div class="col-md-4 col-xs-12 coin_summary_bar">
+            <div class="name_rank_container">
+                <div class="rank_flag">
+                    <div class="rank_flag_text">
+                        <span><%=display[0]['rank']%></span>
+                    </div>
+                    <div class="rank_flag_desc">
+                        <p style="margin-left: 15px;" class="sprite small_coin_logo sprite-<%=(display[0]['name'].toLowerCase()).replace(/\s/g,"") %>"></p>
+                    </div>
+                    <div class="rank_flag_trig"></div>
+                </div>
+                <div class="coin_name_buttons_container">
+                    <div style="margin: 16px 0px; display: inline-block">
+                        <span class="coin_name_buttons_name"><%= display[0]['name']%></span>
+                        <span style="display: inline-block" class="coin_name_buttons_symbol">&nbsp;(<%= display[0]['symbol']%>)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-7 col-xs-12 coin_market_info_container">
+            <div class="coin_market_info_price">
+                <span style="color: rgb(255, 255, 255);">$<%=display[0]['price_usd']%></span>
+                <% if(parseFloat(display[0]['percent_change_24h']) < 0){ %>
+                <span class="red"><%=display[0]['percent_change_24h'] + '%'%><sub style="color: #ccc; font-size: x-small">(last 24 hrs)</sub></span>
+                <% } %>
+                <% if(parseFloat(display[0]['percent_change_24h']) >= 0) {%>
+                <span class="green"><%=display[0]['percent_change_24h'] + '%'%><sub style="color: #ccc; font-size: x-small">(last 24 hrs)</sub></span>
+                <% } %>
+            </div>
+            <table class="margin-top-20" style="border-collapse: collapse;">
+                <tbody>
+                <tr>
+                    <th class="coin_market_info_th"><span>Market Cap</span></th>
+                    <th class="coin_market_info_th"><span>24 Hour Volume</span></th>
+                    <th class="coin_market_info_th"><span>Available Supply</span></th>
+                </tr>
+                <tr style="color: white;">
+                    <td class="coin_market_info_td">$<%=(parseFloat(display[0]['market_cap_usd'])/1000000000).toFixed(4) %> B</td>
+                    <td class="coin_market_info_td">$<%=(parseFloat(display[0]['24h_volume_usd'])/1000000000).toFixed(4) %> B</td>
+                    <td class="coin_market_info_td">$<%=(parseFloat(display[0]['available_supply'])/1000000000).toFixed(4) %> B</td>
+                </tr>
+                <tr>
+                    <th class="coin_market_info_th"><span>Total Supply</span></th>
+                    <th class="coin_market_info_th"><span>Max Supply</span></th>
+                    <th class="coin_market_info_th"><span>Change 1 hr</span></th>
+                </tr>
+                <tr style="color: white;">
+                    <td class="coin_market_info_td">$<%=(parseFloat(display[0]['total_supply'])/1000000000).toFixed(4) %> B</td>
+                    <td class="coin_market_info_td">$<%=(parseFloat(display[0]['max_supply'])/1000000000).toFixed(4) %> B</td>
+                    <td class="coin_market_info_td"><%=display[0]['percent_change_1h']%> %</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="col-md-12 col-xs-12 margin-top-70" id="charts">
+        <div class="margin-top-70" id="price-chart" style="width: auto !important; height: auto !important;"></div>
+        <div class="margin-top-70" id="volume-chart" data-formatter="numberHumanizer" style="width: auto !important; height:auto !important"></div>
+        <div class="margin-top-70" id="market-cap-chart" data-formatter="numberHumanizer" style="width: auto !important; height: auto !important"></div>
+    </div>
+</div>
+
+
+
+<% include partials/footer.ejs%>
+
+<script type="text/javascript">
+
+    var details = JSON.parse(<%-JSON.stringify(details)%>);
+
+    $(document).ready(function() {
+        windowSizeActions();
+    });
+    var symbol = details[0].symbol;
+    if(symbol != undefined){
+        $.ajax({
+            url: '/currency/history/?value='+symbol,
+            type: 'GET',
+            success: function(data) {
+                var json = JSON.parse(data);
+                var marketCap = 'market_cap' in json ? json['market_cap'] : '';
+                var price = 'price' in json ? json['price'] : '';
+                var volume = 'volume' in json ? json['volume'] : '';
+                console.log(price);
+                if(price !== '') googleChart('price', price);
+                if(volume !== '') googleChart('market-cap', marketCap);
+                if(volume !== '') googleChart('volume', volume);
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        });
+
+    }
+
+    function googleChart(type, json) {
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = new google.visualization.DataTable();
+
+            var legend = type === 'price' ? toTitleCase(type.replace('-', ' ')) : toTitleCase(type.replace('-', ' ') + ' ( in Billions )');
+            data.addColumn('date', 'Time');
+            data.addColumn('number', legend);
+
+            for (var i = 0; i < json.length; i++) {
+                var xAxis = new Date(json[i][0]);
+                var yAxis = type === 'price' ? json[i][1] : json[i][1] / 1000000000;
+                data.addRow([xAxis, yAxis]);
+            }
+
+            var options = {
+                title: toTitleCase(type.replace('-', ' ') + ' ( $ )'),
+                curveType : 'function',
+                legend    : { position: 'bottom' },
+                colors    : ['#337ab7']
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById(type+'-chart'));
+            chart.draw(data, options);
+        }
+    }
+</script>

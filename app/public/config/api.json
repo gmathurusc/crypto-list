@@ -6,6 +6,6 @@
   },
   "coincap" : {
     "base" : "http://coincap.io",
-    "history_7day" : "/history/7day"
+    "history_30day" : "/history/30day"
   }
 }

@@ -48,3 +48,8 @@ function addLogo(value, row) {
     return '<p style="float: left; text-decoration: underline">' + value + '</p><br><br><p style="float: left" class="sprite small_coin_logo sprite-'+currency.toLowerCase()+'"><br></p>' +
         '';
 }
+
+function toTitleCase(str)
+{
+    return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+}

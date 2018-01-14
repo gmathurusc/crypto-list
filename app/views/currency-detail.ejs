@@ -82,13 +82,14 @@
             type: 'GET',
             success: function(data) {
                 var json = JSON.parse(data);
-                var marketCap = 'market_cap' in json ? json['market_cap'] : '';
-                var price = 'price' in json ? json['price'] : '';
-                var volume = 'volume' in json ? json['volume'] : '';
-                console.log(price);
-                if(price !== '') googleChart('price', price);
-                if(volume !== '') googleChart('market-cap', marketCap);
-                if(volume !== '') googleChart('volume', volume);
+                if(json != null) {
+                    var marketCap = 'market_cap' in json ? json['market_cap'] : '';
+                    var price = 'price' in json ? json['price'] : '';
+                    var volume = 'volume' in json ? json['volume'] : '';
+                    if(price !== '') googleChart('price', price);
+                    if(volume !== '') googleChart('market-cap', marketCap);
+                    if(volume !== '') googleChart('volume', volume);
+                }
             },
             error: function(e) {
                 console.log(e);

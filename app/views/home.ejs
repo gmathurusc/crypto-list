@@ -1,7 +1,7 @@
 <% include partials/header.ejs%>
 <div id="content" class="main-container margin-top-70">
    <div class="col-md-12 table-responsive">
-      <table id="table" class="table table-responsive"
+      <table id="table" class="table"
              data-pagination="true"
              data-search="true"
              data-toggle="table"
@@ -11,11 +11,13 @@
              data-show-multi-sort="true"
              data-page-size="25"
              data-fixed-columns="true"
+             data-fixed-number="1"
       >
           <% include partials/range-filter.ejs%>
          <thead>
             <tr>
-                <th scope="col" data-field="symbol" class="text-align-left optional symbol" data-formatter="addLogo" data-search="true">Rank /<br/>Symbol</th>
+                <th scope="col" data-field="symbol" class="text-align-left optional symbol" data-formatter="addLogo" data-sortable="true" data-search="true">Symbol</th>
+                <th scope="col" data-field="rank" class="text-align-left optional rank" data-sortable="true" data-search="true" data-filter-control="input">Rank</th>
                 <th scope="col" data-field="name" class="text-align-left required details name" data-sortable="true" data-filter-control="input" data-search="true">Name</th>
                 <th scope="col" data-field="market_cap_usd" class="text-align-right optional market_cap_usd" data-sortable="true" data-formatter="numberHumanizer" data-filter-control="input" data-search="true">Market Cap</th>
                 <th scope="col" data-field="price_usd" class="text-align-right required price_usd" data-formatter="priceFormatter" data-sortable="true" data-filter-control="input" data-search="true">Price</th>

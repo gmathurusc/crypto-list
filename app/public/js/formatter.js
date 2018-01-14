@@ -45,7 +45,7 @@ function cellStyle(value, row, index) {
 
 function addLogo(value, row) {
     var currency = row.name.replace(/\s/g,"");
-    return '<p>' + row.rank + ' <span>' + value +  '</span></p><p style="float: left" class="sprite small_coin_logo sprite-'+currency.toLowerCase()+'"></p>';
+    return '<p>' + value +  '</span></p><p style="float: left" class="sprite small_coin_logo sprite-'+currency.toLowerCase()+'"></p>';
 }
 
 function toTitleCase(str)

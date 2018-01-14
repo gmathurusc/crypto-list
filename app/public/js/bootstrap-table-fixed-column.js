@@ -14,8 +14,8 @@
     var BootstrapTable = $.fn.bootstrapTable.Constructor,
         _initHeader = BootstrapTable.prototype.initHeader,
         _initBody   = BootstrapTable.prototype.initBody,
-        _resetView = BootstrapTable.prototype.resetView;
-        // _getCaret  = BootstrapTable.prototype.getCaret;
+        _resetView = BootstrapTable.prototype.resetView,
+        _getCaret  = BootstrapTable.prototype.getCaret;
 
     BootstrapTable.prototype.initFixedColumns = function () {
         this.$fixedHeader = $([
@@ -52,7 +52,7 @@
 
         this.initFixedColumns();
 
-        var $trs = this.$header.find('tr').clone();
+        var $trs = this.$header.find('tr').clone(true);
 
         this.$fixedHeaderColumns.html('').append($trs);
     };
@@ -89,20 +89,20 @@
         });
     };
 
-    // BootstrapTable.prototype.getCaret	= function () {
-    //     var result = _getCaret.apply(this, arguments);
-    //
-    //     if (this.options.fixedColumns && this.$fixedHeaderColumns instanceof jQuery) {
-    //         var that = this, $th;
-    //
-    //         $.each(this.$fixedHeaderColumns.find('th'), function (i, th) {
-    //             $th = $(th);
-    //             $th.find('.sortable').removeClass('desc asc').addClass($th.data('field') === that.options.sortName ? that.options.sortOrder : 'both');
-    //         });
-    //     }
-    //
-    //     return result;
-    // };
+    BootstrapTable.prototype.getCaret	= function () {
+        var result = _getCaret.apply(this, arguments);
+
+        if (this.options.fixedColumns && this.$fixedHeaderColumns instanceof jQuery) {
+            var that = this, $th;
+
+            $.each(this.$fixedHeaderColumns.find('th'), function (i, th) {
+                $th = $(th);
+                $th.find('.sortable').removeClass('desc asc').addClass($th.data('field') === that.options.sortName ? that.options.sortOrder : 'both');
+            });
+        }
+
+        return result;
+    };
 
 
     BootstrapTable.prototype.resetView = function () {

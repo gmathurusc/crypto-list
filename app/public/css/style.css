@@ -87,7 +87,11 @@ a:hover {
     font-size: 10px !important;
     font-weight: 900;
     background-color: slategrey;
-    border: #b8d1f3 1px solid
+    border: #b8d1f3 1px solid;
+}
+
+th {
+    vertical-align: top !important;
 }
 
 .table tbody {
@@ -150,8 +154,8 @@ input {
 }
 
 td.details {
-    text-decoration: underline !important;
     cursor: pointer !important;
+    text-decoration: underline;
 }
 
 

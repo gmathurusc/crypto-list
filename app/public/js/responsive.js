@@ -1,5 +1,5 @@
 $( window ).resize(function() {
-    windowSizeActions();
+    //windowSizeActions();
 });
 
 function windowSizeActions() {

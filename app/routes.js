@@ -8,7 +8,14 @@ var limit = require("./public/config/limit.json");
 
 var tickerURL = api.coinmarketcap.base + api.coinmarketcap.ticker;
 var globalURL = api.coinmarketcap.base + api.coinmarketcap.global;
-var coincapHistoryURL = api.coincap.base + api.coincap.history_30day;
+var coinCapURL = api.coincap.base;
+var history = {
+    'one_day': api.coincap.history_1day,
+    'seven_day': api.coincap.history_7day,
+    'thirty_day': api.coincap.history_30day,
+    'ninety_day': api.coincap.history_90day
+};
+
 const cache = new NodeCache({ stdTTL: 600} );
 
 //Middle ware that is specific to this router
@@ -34,7 +41,7 @@ router.get('/', function (req, res) {
             function(error, response, body) {
                 console.log("caching....");
                 cache.set('tickers', body);
-                tickerBasicInfo();
+                setTickerBasicInfoCache();
                 tickers = body;
                 res.render('home', {
                     title : 'Crypto List',
@@ -58,14 +65,13 @@ router.get('/details/', function (req, res) {
                 tickers = JSON.parse(body);
                 console.log("caching in details...");
                 cache.set('tickers', body);
-                tickerBasicInfo();
+                setTickerBasicInfoCache();
         });
     }
     var id, title;
     if(tickers) {
         for(var i = 0; i < tickers.length; i++) {
             if(tickers[i]['name'] === name) {
-                console.log(tickers[i]['id']);
                 id = tickers[i]['id'];
                 title = tickers[i]['name']
             }
@@ -73,7 +79,6 @@ router.get('/details/', function (req, res) {
     }
     else {
         id = name.replace(/ /g,'').toLowerCase();
-        console.log(id);
     }
 
     request.get({ url: tickerURL+"/"+id},
@@ -88,13 +93,16 @@ router.get('/details/', function (req, res) {
 
 router.get('/currency/history/', function (req, res) {
     var symbol = req.query.value;
+    var day = req.query.day ? req.query.day : 'seven_day';
+    var coincapHistoryURL = coinCapURL + history[day];
+    console.log("calling : " + coincapHistoryURL);
     request.get({ url: coincapHistoryURL+"/"+symbol},
         function(error, response, body) {
             res.send(body);
         });
 });
 
-function tickerBasicInfo() {
+function setTickerBasicInfoCache() {
     var tickers = JSON.parse(cache.get("tickers"));
     var tickerArray = [];
     for(var i = 0; i < tickers.length; i++) {

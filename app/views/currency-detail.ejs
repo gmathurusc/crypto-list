@@ -58,6 +58,15 @@
         </div>
     </div>
     <div class="col-md-12 col-xs-12 margin-top-70" id="charts">
+
+        <div class="col-md-2 col-xs-12" style="float: right">
+            <select id="days-selector" class="form-control">
+                <option value="one_day">1 day</option>
+                <option value="seven_day" selected>7 days</option>
+                <option value="thirty_day">30 days</option>
+                <option value="ninety_day">90 days</option>
+            </select>
+        </div>
         <div class="margin-top-70" id="price-chart" style="width: auto !important; height: auto !important;"></div>
         <div class="margin-top-70" id="volume-chart" data-formatter="numberHumanizer" style="width: auto !important; height:auto !important"></div>
         <div class="margin-top-70" id="market-cap-chart" data-formatter="numberHumanizer" style="width: auto !important; height: auto !important"></div>
@@ -69,61 +78,20 @@
 <% include partials/footer.ejs%>
 
 <script type="text/javascript">
-
     var details = JSON.parse(<%-JSON.stringify(details)%>);
+    var symbol = details[0].symbol;
+    var day = 'seven_day';
 
     $(document).ready(function() {
         windowSizeActions();
-    });
-    var symbol = details[0].symbol;
-    if(symbol != undefined){
-        $.ajax({
-            url: '/currency/history/?value='+symbol,
-            type: 'GET',
-            success: function(data) {
-                var json = JSON.parse(data);
-                if(json != null) {
-                    var marketCap = 'market_cap' in json ? json['market_cap'] : '';
-                    var price = 'price' in json ? json['price'] : '';
-                    var volume = 'volume' in json ? json['volume'] : '';
-                    if(price !== '') googleChart('price', price);
-                    if(volume !== '') googleChart('market-cap', marketCap);
-                    if(volume !== '') googleChart('volume', volume);
-                }
-            },
-            error: function(e) {
-                console.log(e);
-            }
+        $("#days-selector").change(function()
+        {
+            day = $("#days-selector option:selected").val();
+            getHistory(symbol, day);
         });
+    });
 
-    }
-
-    function googleChart(type, json) {
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-
-        function drawChart() {
-            var data = new google.visualization.DataTable();
-
-            var legend = type === 'price' ? toTitleCase(type.replace('-', ' ')) : toTitleCase(type.replace('-', ' ') + ' ( in Billions )');
-            data.addColumn('date', 'Time');
-            data.addColumn('number', legend);
-
-            for (var i = 0; i < json.length; i++) {
-                var xAxis = new Date(json[i][0]);
-                var yAxis = type === 'price' ? json[i][1] : json[i][1] / 1000000000;
-                data.addRow([xAxis, yAxis]);
-            }
-
-            var options = {
-                title: toTitleCase(type.replace('-', ' ') + ' ( $ )'),
-                curveType : 'function',
-                legend    : { position: 'bottom' },
-                colors    : ['#337ab7']
-            };
-
-            var chart = new google.visualization.LineChart(document.getElementById(type+'-chart'));
-            chart.draw(data, options);
-        }
+    if(symbol !== undefined){
+        getHistory(symbol, day);
     }
 </script>

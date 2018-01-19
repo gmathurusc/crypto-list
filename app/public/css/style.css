@@ -301,3 +301,9 @@ td.details {
 td.coin_market_info_td {
     padding-bottom: 15px;
 }
+
+select.form-control {
+    background-color: #ccc;
+    color: black;
+    font-weight: 900;
+}

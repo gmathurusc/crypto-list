@@ -1591,13 +1591,13 @@
 
     BootstrapTable.prototype.onPageListChange = function (event) {
         var $this = $(event.currentTarget);
-
         $this.parent().addClass('active').siblings().removeClass('active');
         this.options.pageSize = $this.text().toUpperCase() === this.options.formatAllRows().toUpperCase() ?
             this.options.formatAllRows() : +$this.text();
         this.$toolbar.find('.page-size').text(this.options.pageSize);
 
         this.updatePagination(event);
+        scrollToTop();
         return false;
     };
 
@@ -1605,6 +1605,7 @@
     BootstrapTable.prototype.onPageFirst = function (event) {
         this.options.pageNumber = 1;
         this.updatePagination(event);
+        scrollToTop();
         return false;
     };
 
@@ -1615,6 +1616,7 @@
             this.options.pageNumber--;
         }
         this.updatePagination(event);
+        scrollToTop();
         return false;
     };
 
@@ -1625,6 +1627,7 @@
             this.options.pageNumber++;
         }
         this.updatePagination(event);
+        scrollToTop();
         return false;
     };
 
@@ -1632,6 +1635,7 @@
     BootstrapTable.prototype.onPageLast = function (event) {
         this.options.pageNumber = this.totalPages;
         this.updatePagination(event);
+        scrollToTop();
         return false;
     };
 
@@ -1641,6 +1645,7 @@
         }
         this.options.pageNumber = +$(event.currentTarget).text();
         this.updatePagination(event);
+        scrollToTop();
         return false;
     };
 
@@ -3205,3 +3210,7 @@
         $('[data-toggle="table"]').bootstrapTable();
     });
 })(jQuery);
+
+function scrollToTop(){
+    $( ".scrollToTop" ).click();
+}

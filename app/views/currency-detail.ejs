@@ -59,12 +59,12 @@
     </div>
     <div class="col-md-12 col-xs-12 margin-top-70" id="charts">
 
-        <div class="col-md-2 col-xs-12" style="float: right">
+        <div class="col-md-2 col-xs-6 margin-top-20" style="float: right">
             <select id="days-selector" class="form-control">
-                <option value="one_day">1 day</option>
-                <option value="seven_day" selected>7 days</option>
-                <option value="thirty_day">30 days</option>
-                <option value="ninety_day">90 days</option>
+                <option value="one_day">1 Day</option>
+                <option value="seven_day">7 Days</option>
+                <option value="thirty_day">30 Days</option>
+                <option value="ninety_day">90 Days</option>
             </select>
         </div>
         <div class="margin-top-70" id="price-chart" style="width: auto !important; height: auto !important;"></div>
@@ -80,10 +80,10 @@
 <script type="text/javascript">
     var details = JSON.parse(<%-JSON.stringify(details)%>);
     var symbol = details[0].symbol;
-    var day = 'seven_day';
-
+    var day = getURLParams('days') ? getURLParams('days') : 'seven_day';
+    $('option[value='+day+']').attr('selected', 'selected');
     $(document).ready(function() {
-        windowSizeActions();
+//        windowSizeActions();
         $("#days-selector").change(function()
         {
             day = $("#days-selector option:selected").val();

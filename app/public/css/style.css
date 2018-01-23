@@ -324,3 +324,23 @@ select.form-control {
 .scrollToTop:hover{
     text-decoration:none;
 }
+
+
+
+canvas {
+    width: 100% !important;
+    height: 360px !important;
+    background-color: #b8d1f3;
+    font-size: 14px;
+    color: black;
+    border-radius: 10px;
+}
+
+a.hover {
+    color: #1F2739;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+    color: #fff;
+    background: none;
+}

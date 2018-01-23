@@ -57,19 +57,42 @@
             </table>
         </div>
     </div>
-    <div class="col-md-12 col-xs-12 margin-top-70" id="charts">
+    <% include partials/loading.ejs%>
+    <div class="col-md-12 col-xs-12 margin-top-70" id="charts" style="display: none">
+        <div class="col-md-8 col-xs-5">
+            <ul class="nav nav-pills chart-options">
+                <li class="nav-item active">
+                    <a class="nav-link" id="price-chart-option" data-toggle="tab" href="#price-chart-div">Price</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="volume-chart-option" data-toggle="tab" href="#volume-chart-div">Volume</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="market-cap-chart-option" data-toggle="tab" href="#market-cap-chart-div">Market Cap</a>
+                </li>
+            </ul>
+        </div>
 
-        <div class="col-md-2 col-xs-6 margin-top-20" style="float: right">
+        <div class="col-md-2 col-xs-5" style="float: right">
             <select id="days-selector" class="form-control">
                 <option value="one_day">1 Day</option>
                 <option value="seven_day">7 Days</option>
-                <option value="thirty_day">30 Days</option>
-                <option value="ninety_day">90 Days</option>
+                <option class="hidden-sm hidden-xs" value="thirty_day">30 Days</option>
+                <option class="hidden-sm hidden-xs" value="ninety_day">90 Days</option>
             </select>
         </div>
-        <div class="margin-top-70" id="price-chart" style="width: auto !important; height: auto !important;"></div>
-        <div class="margin-top-70" id="volume-chart" data-formatter="numberHumanizer" style="width: auto !important; height:auto !important"></div>
-        <div class="margin-top-70" id="market-cap-chart" data-formatter="numberHumanizer" style="width: auto !important; height: auto !important"></div>
+        <div class="col-md-12 col-xs-12 margin-top-20 tab-content" id="charts">
+            <div class="tab-pane active chart" id="price-chart-div">
+                <canvas id="price-chart" style=""></canvas>
+            </div>
+            <div class="tab-pane" id="volume-chart-div">
+                <canvas id="volume-chart" data-formatter="numberHumanizer" style=""></canvas>
+            </div>
+            <div class="tab-pane" id="market-cap-chart-div">
+                <canvas id="market-cap-chart" data-formatter="numberHumanizer" style=""></canvas>
+            </div>
+        </div>
+
     </div>
 </div>
 

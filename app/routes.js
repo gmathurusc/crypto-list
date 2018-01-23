@@ -32,7 +32,7 @@ router.get('/', function (req, res) {
         console.log("cached");
         tickers = cache.get("tickers");
         res.render('home', {
-            title : 'Crypto List',
+            title : 'Home',
             tickers : tickers
         })
     }
@@ -44,7 +44,7 @@ router.get('/', function (req, res) {
                 setTickerBasicInfoCache();
                 tickers = body;
                 res.render('home', {
-                    title : 'Crypto List',
+                    title : 'Home',
                     tickers : tickers
                 })
             });

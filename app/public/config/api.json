@@ -10,5 +10,10 @@
     "history_7day" : "/history/7day",
     "history_30day" : "/history/30day",
     "history_90day" : "/history/90day"
+  },
+  "cryptoCompare" : {
+    "base" : "https://www.cryptocompare.com",
+    "coinList" : "/api/data/coinlist/",
+    "coinDetails" : "/api/data/coinsnapshotfullbyid/"
   }
 }

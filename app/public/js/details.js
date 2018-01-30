@@ -25,6 +25,34 @@ function getHistory(symbol, day) {
                 $('#charts').show();
                 $('#container-loading').hide();
             }
+            else {
+                $('#container-loading').hide();
+            }
+        },
+        error: function(e) {
+            console.log(e);
+        }
+    });
+}
+
+function getCoinDetails(symbol) {
+    $.ajax({
+        url: '/currency/details/?value='+symbol+'&day='+day,
+        type: 'GET',
+        success: function(data) {
+            var json = JSON.parse(data);
+            if(json !== null) {
+                var desc = json.Data.General.Description;
+                var features = json.Data.General.Features;
+                if(desc !== null && desc !== "") {
+                    $('#description').show();
+                    $('#description-content').html(desc)
+                }
+                if(features !== null && features !== "") {
+                    $('#features').show();
+                    $('#features-content').html(features);
+                }
+            }
         },
         error: function(e) {
             console.log(e);
@@ -92,7 +120,7 @@ function canvasCharts(option, json) {
         datasets : [
             {
                 label: label,
-                borderColor: 'green',
+                borderColor: '#fff',
                 data: yAxisData,
                 fill: false
             }
@@ -112,7 +140,7 @@ function canvasCharts(option, json) {
             elements: { point: { radius: 0 } },
             legend: {
                 labels: {
-                    fontColor: "black",
+                    fontColor: "#1F2739",
                     fontSize: 18
                 }
             },
@@ -120,13 +148,13 @@ function canvasCharts(option, json) {
                 xAxes: [{
                     type: 'time',
                     ticks: {
-                        fontColor: "black",
+                        fontColor: "#1F2739",
                         fontSize: 18
                     }
                 }],
                 yAxes: [{
                     ticks: {
-                        fontColor: "black",
+                        fontColor: "#1F2739",
                         fontSize: 18
                     }
                 }]

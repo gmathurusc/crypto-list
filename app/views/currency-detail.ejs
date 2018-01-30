@@ -23,7 +23,7 @@
 
         <div class="col-md-7 col-xs-12 coin_market_info_container">
             <div class="coin_market_info_price">
-                <span style="color: rgb(255, 255, 255);">$<%=display[0]['price_usd']%></span>
+                <span style="color: rgb(255, 255, 255);">$<%=parseFloat(display[0]['price_usd']).toFixed(3)%></span>
                 <% if(parseFloat(display[0]['percent_change_24h']) < 0){ %>
                 <span class="red"><%=display[0]['percent_change_24h'] + '%'%><sub style="color: #ccc; font-size: x-small">(last 24 hrs)</sub></span>
                 <% } %>
@@ -39,9 +39,9 @@
                     <th class="coin_market_info_th"><span>Available Supply</span></th>
                 </tr>
                 <tr style="color: white;">
-                    <td class="coin_market_info_td">$<%=(parseFloat(display[0]['market_cap_usd'])/1000000000).toFixed(4) %> B</td>
-                    <td class="coin_market_info_td">$<%=(parseFloat(display[0]['24h_volume_usd'])/1000000000).toFixed(4) %> B</td>
-                    <td class="coin_market_info_td">$<%=(parseFloat(display[0]['available_supply'])/1000000000).toFixed(4) %> B</td>
+                    <td class="coin_market_info_td"><%=!(isNaN(parseFloat(display[0]['market_cap_usd']))) ? '$ '+(parseFloat(display[0]['market_cap_usd'])/1000000000).toFixed(3) +' B' : '-' %></td>
+                    <td class="coin_market_info_td"><%=!(isNaN(parseFloat(display[0]['24h_volume_usd']))) ? '$ '+(parseFloat(display[0]['24h_volume_usd'])/1000000000).toFixed(3) +' B' : '-' %></td>
+                    <td class="coin_market_info_td"><%=!(isNaN(parseFloat(display[0]['available_supply']))) ? '$ '+(parseFloat(display[0]['available_supply'])/1000000000).toFixed(3) +' B' : '-' %></td>
                 </tr>
                 <tr>
                     <th class="coin_market_info_th"><span>Total Supply</span></th>
@@ -49,9 +49,9 @@
                     <th class="coin_market_info_th"><span>Change 1 hr</span></th>
                 </tr>
                 <tr style="color: white;">
-                    <td class="coin_market_info_td">$<%=(parseFloat(display[0]['total_supply'])/1000000000).toFixed(4) %> B</td>
-                    <td class="coin_market_info_td">$<%=(parseFloat(display[0]['max_supply'])/1000000000).toFixed(4) %> B</td>
-                    <td class="coin_market_info_td"><%=display[0]['percent_change_1h']%> %</td>
+                    <td class="coin_market_info_td"><%=!(isNaN(parseFloat(display[0]['total_supply']))) ? '$ '+(parseFloat(display[0]['total_supply'])/1000000000).toFixed(3) +' B' : '-'%></td>
+                    <td class="coin_market_info_td"><%=!(isNaN(parseFloat(display[0]['max_supply']))) ? '$ '+(parseFloat(display[0]['max_supply'])/1000000000).toFixed(3) +' B' : '-'%></td>
+                    <td class="coin_market_info_td"><%=!(isNaN(parseFloat(display[0]['percent_change_1h']))) ? display[0]['percent_change_1h'] + ' %' : '-'%></td>
                 </tr>
                 </tbody>
             </table>
@@ -59,7 +59,7 @@
     </div>
     <% include partials/loading.ejs%>
     <div class="col-md-12 col-xs-12 margin-top-70" id="charts" style="display: none">
-        <div class="col-md-8 col-xs-5">
+        <div class="col-md-8 col-xs-5 hidden-sm hidden-xs">
             <ul class="nav nav-pills chart-options">
                 <li class="nav-item active">
                     <a class="nav-link" id="price-chart-option" data-toggle="tab" href="#price-chart-div">Price</a>
@@ -73,15 +73,15 @@
             </ul>
         </div>
 
-        <div class="col-md-2 col-xs-5" style="float: right">
+        <div class="col-md-2 col-xs-5 hidden-sm hidden-xs" style="float: right">
             <select id="days-selector" class="form-control">
                 <option value="one_day">1 Day</option>
                 <option value="seven_day">7 Days</option>
-                <option class="hidden-sm hidden-xs" value="thirty_day">30 Days</option>
-                <option class="hidden-sm hidden-xs" value="ninety_day">90 Days</option>
+                <option value="thirty_day">30 Days</option>
+                <option value="ninety_day">90 Days</option>
             </select>
         </div>
-        <div class="col-md-12 col-xs-12 margin-top-20 tab-content" id="charts">
+        <div class="col-md-12 col-xs-12 margin-top-20 tab-content hidden-sm hidden-xs" id="charts">
             <div class="tab-pane active chart" id="price-chart-div">
                 <canvas id="price-chart" style=""></canvas>
             </div>
@@ -92,8 +92,16 @@
                 <canvas id="market-cap-chart" data-formatter="numberHumanizer" style=""></canvas>
             </div>
         </div>
-
+        <div class="col-md-12 col-xs-12 margin-top-30 tab-content" id="description" style="display: none">
+            <h4 style="text-decoration: underline; color: white">Description : </h4>
+            <div id="description-content" style="font-size: larger"></div>
+        </div>
+        <div class="col-md-12 col-xs-12 margin-top-30 tab-content" id="features" style="display: none">
+            <h4 style="text-decoration: underline; color: white">Features : </h4>
+            <div id="features-content" style="font-size: larger"></div>
+        </div>
     </div>
+
 </div>
 
 
@@ -116,5 +124,6 @@
 
     if(symbol !== undefined){
         getHistory(symbol, day);
+        getCoinDetails(symbol);
     }
 </script>

@@ -14,7 +14,9 @@
                 </div>
                 <div class="coin_name_buttons_container">
                     <div style="margin: 16px 0px; display: inline-block">
-                        <span class="coin_name_buttons_name"><%= display[0]['name']%></span>
+                        <span style="text-transform: uppercase" class="coin_name_buttons_name" id="coin_name_buttons_name">
+                            <%= display[0]['name']%>
+                        </span>
                         <span style="display: inline-block" class="coin_name_buttons_symbol">&nbsp;(<%= display[0]['symbol']%>)</span>
                     </div>
                 </div>
@@ -92,13 +94,45 @@
                 <canvas id="market-cap-chart" data-formatter="numberHumanizer" style=""></canvas>
             </div>
         </div>
-        <div class="col-md-12 col-xs-12 margin-top-30 tab-content" id="description" style="display: none">
-            <h4 style="text-decoration: underline; color: white">Description : </h4>
-            <div id="description-content" style="font-size: larger"></div>
+
+
+        <div class="col-md-8 margin-top-30 col-xs-12" id="description-tabs">
+            <ul class="nav nav-pills description-options">
+                <li class="nav-item active">
+                    <a class="nav-link col-xs-4" id="description-tab" data-toggle="tab" href="#description">Description</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link col-xs-4" id="features-tab" data-toggle="tab" href="#features">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link col-xs-4" id="technology-tab" data-toggle="tab" href="#technology">Technology</a>
+                </li>
+                <!--<li class="nav-item">-->
+                    <!--<a class="nav-link col-xs-4" id="more-tab" data-toggle="tab" href="#more">More</a>-->
+                <!--</li>-->
+            </ul>
         </div>
-        <div class="col-md-12 col-xs-12 margin-top-30 tab-content" id="features" style="display: none">
-            <h4 style="text-decoration: underline; color: white">Features : </h4>
-            <div id="features-content" style="font-size: larger"></div>
+
+
+        <div class="col-md-12 col-xs-12 tab-content" id="description-options">
+            <div class="col-md-12 col-xs-12 tab-content tab-pane active" id="description">
+                <div id="description-content"></div>
+            </div>
+            <div class="col-md-12 col-xs-12 tab-content tab-pane" id="features">
+                <div id="features-content"></div>
+            </div>
+            <div class="col-md-12 col-xs-12 tab-content tab-pane" id="technology">
+                <div id="technology-content"></div>
+            </div>
+            <!--<div class="col-md-12 col-xs-12 tab-content tab-pane" id="more">-->
+                <!--<div class="col-md-8 col-xs-12">-->
+                    <!--<span class="more-label">Algorithm : </span><span id="algorithm-content"></span><br>-->
+                    <!--<span class="more-label">Twitter : </span><a target="_blank" id="twitter-content">Tweeter</a><br>-->
+                    <!--<span class="more-label">Start Date : </span><span id="startdate-content"></span><br>-->
+                    <!--<span class="more-label">Sponsor : </span><a target="_blank" id="link-content">Link</a><br>-->
+                    <!--<span class="more-label">Total Coins Mined : </span><span id="total-coins-mined-content"></span><br>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
     </div>
 

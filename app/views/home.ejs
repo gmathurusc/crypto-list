@@ -40,18 +40,6 @@
 
    $(document).ready(function() {
        $table.bootstrapTable('load', jsonData);
-//       windowSizeActions();
-   });
-
-   $(function () {
-       $('#hide-show-columns :checkbox').change(function () {
-           var id = $(this).attr('id');
-           if (this.checked) {
-               $table.bootstrapTable('showColumn', id);
-           } else {
-               $table.bootstrapTable('hideColumn', id);
-           }
-       })
    });
 </script>
 

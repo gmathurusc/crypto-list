@@ -42,16 +42,7 @@ function getCoinDetails(symbol) {
         success: function(data) {
             var json = JSON.parse(data);
             if(json !== null) {
-                var desc = json.Data.General.Description;
-                var features = json.Data.General.Features;
-                if(desc !== null && desc !== "") {
-                    $('#description').show();
-                    $('#description-content').html(desc)
-                }
-                if(features !== null && features !== "") {
-                    $('#features').show();
-                    $('#features-content').html(features);
-                }
+                setDetailsInfo(json);
             }
         },
         error: function(e) {
@@ -102,6 +93,80 @@ function googleChart(type, json) {
         var chart = new google.visualization.LineChart(document.getElementById(type+'-chart'));
         chart.draw(data, options);
     }
+}
+
+function setDetailsInfo(json) {
+    var desc = json.Data.General.Description;
+    var features = json.Data.General.Features;
+    var technology = json.Data.General.Technology;
+    var website = json.Data.General.Website;
+    var baseURL = json.Data.SEO.BaseUrl !== null ? json.Data.SEO.BaseUrl : "https://www.cryptocompare.com";
+    var misc = [];
+
+    if(desc === undefined && features === undefined && technology === undefined) {
+        $('#description-options').hide();
+        $('#description-tabs').hide();
+    }
+    else {
+        if(desc !== null && desc !== "" && desc !== undefined) {
+            $('#description-content').html(desc);
+            convertRelativePathToAbsolute('#description-content', baseURL);
+        }
+        else {
+            $('#description-tab').hide();
+            $('#description').hide();
+        }
+        if(features !== null && features !== "" && features !== undefined) {
+            $('#features-content').html(features);
+            convertRelativePathToAbsolute('#features-content', baseURL);
+        }
+        else {
+            $('#features-tab').hide();
+            $('#features').hide();
+        }
+        if(technology !== null && technology !== "" && technology !== undefined) {
+            $('#technology-content').html(technology);
+            convertRelativePathToAbsolute('#technology-content', baseURL);
+        }
+        else {
+            $('#technology-tab').hide();
+            $('#technology').hide();
+        }
+    }
+    console.log(website);
+    if(website !== null && website !== "" && website !== "-") {
+        $("#coin_name_buttons_name").html(website);
+        misc['website'] = website;
+    }
+
+    // if(json.Data.General.Algorithm !== null)
+    //     $("#algorithm-content").html(json.Data.General.Algorithm);
+    // else
+    //     $("#algorithm-content").html("-");
+    //
+    // if(json.Data.General.Twitter !== null){
+    //     $("#twitter-content").attr('href', "https://twitter.com/" + json.Data.General.Twitter);
+    //     $("#twitter-content").text(json.Data.General.Twitter);
+    // }
+    // else
+    //     $("#twitter-content").html("-");
+    //
+    // if(json.Data.General.StartDate !== null)
+    //     $("#startdate-content").html(json.Data.General.StartDate);
+    // else
+    //     $("#startdate-content").html("-");
+    //
+    // if(json.Data.General.Sponsor.Link !== null) {
+    //     $("#link-content").attr('href', json.Data.General.Sponsor.Link);
+    //     $("#link-content").text(json.Data.General.Sponsor.Link);
+    // }
+    // else
+    //     $("#link-content").html("-");
+    //
+    // if(json.Data.General.TotalCoinsMined !== null)
+    //     $("#total-coins-mined-content").html(json.Data.General.TotalCoinsMined);
+    // else
+    //     $("#total-coins-mined-content").html("-");
 }
 
 function canvasCharts(option, json) {

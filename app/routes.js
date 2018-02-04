@@ -4,7 +4,6 @@ var request = require('request');
 const NodeCache = require( "node-cache" );
 var api = require("./public/config/api.json");
 var currency = require("./public/config/currency.json");
-var limit = require("./public/config/limit.json");
 
 var tickerURL = api.coinmarketcap.base + api.coinmarketcap.ticker;
 var coinCapURL = api.coincap.base;
@@ -57,6 +56,9 @@ router.get('/', function (req, res) {
 
 router.get('/details/', function (req, res) {
     var name = req.query.value;
+    if(name === undefined) {
+        res.redirect('/');
+    }
     var tickers;
     if(cache.get("ticker_basic_info")) {
         console.log("cached ticker");
@@ -118,7 +120,6 @@ router.get('/currency/details/', function (req, res) {
     }
     request.get({ url: coinCompare.details+"/?id="+unique_id},
         function(error, response, body) {
-            console.log(body);
             res.send(body);
         });
 });

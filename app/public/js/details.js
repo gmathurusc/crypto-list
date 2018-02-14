@@ -100,6 +100,7 @@ function setDetailsInfo(json) {
     var features = json.Data.General.Features;
     var technology = json.Data.General.Technology;
     var website = json.Data.General.Website;
+    var twitter = json.Data.General.Twitter;
     var baseURL = json.Data.SEO.BaseUrl !== null ? json.Data.SEO.BaseUrl : "https://www.cryptocompare.com";
     var misc = [];
 
@@ -133,11 +134,24 @@ function setDetailsInfo(json) {
             $('#technology').hide();
         }
     }
-    console.log(website);
-    if(website !== null && website !== "" && website !== "-") {
+
+    if(website !== null && website !== "" && website !== "-" && website !== undefined) {
         $("#coin_name_buttons_name").html(website);
         misc['website'] = website;
     }
+
+    if(twitter !== null && twitter !== "" && twitter !== undefined) {
+            if(!(/^(?:[a-z]+:)?\/\//i.test(twitter))){
+                $("#twitter-content").attr('href', "https://twitter.com/" + twitter);
+            }
+            else {
+                $("#twitter-content").attr('href', twitter);
+            }
+            if(!(/[@]/gi.test(twitter)))
+                twitter = '@'+twitter;
+            $("#twitter-content").text(twitter);
+            $("#twitter-div").show()
+        }
 
     // if(json.Data.General.Algorithm !== null)
     //     $("#algorithm-content").html(json.Data.General.Algorithm);

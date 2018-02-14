@@ -44,8 +44,15 @@ function cellStyle(value, row, index) {
 }
 
 function addLogo(value, row) {
-    var currency = row.name.replace(/\s/g,"");
-    return '<p>' + value +  '</span></p><p style="float: left" class="sprite small_coin_logo sprite-'+currency.toLowerCase()+'"></p>';
+    var currency = row.name.replace(/\s/g,"-");
+    currency = currency.replace(/\./g,"");
+    return '<div id="container" style="white-space:nowrap">'+
+        '<div style="display:inline;">'+
+            '<div style="display: inline-block;margin-right:5px;border:none;outline: none;vertical-align: middle;" class="sprite small_coin_logo s-s-'+currency.toLowerCase()+'"></div>'+
+        '</div>'+
+
+        '<div id="texts" style="display:inline; white-space:nowrap;">'+ value + '</div>'+
+    '</div>​';
 }
 
 function toTitleCase(str)

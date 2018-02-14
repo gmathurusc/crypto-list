@@ -8,7 +8,7 @@
                         <span><%=display[0]['rank']%></span>
                     </div>
                     <div class="rank_flag_desc">
-                        <p style="margin-left: 15px;" class="sprite small_coin_logo sprite-<%=(display[0]['name'].toLowerCase()).replace(/\s/g,"") %>"></p>
+                        <p style="margin-left: 18px;" class="sprite small_coin_logo s-s-<%=(display[0]['name'].toLowerCase()).replace(/\s/g,"-").replace(/\./g,"") %>"></p>
                     </div>
                     <div class="rank_flag_trig"></div>
                 </div>
@@ -17,7 +17,9 @@
                         <span style="text-transform: uppercase" class="coin_name_buttons_name" id="coin_name_buttons_name">
                             <%= display[0]['name']%>
                         </span>
-                        <span style="display: inline-block" class="coin_name_buttons_symbol">&nbsp;(<%= display[0]['symbol']%>)</span>
+                        <span  class="coin_name_buttons_symbol">&nbsp;(<%= display[0]['symbol']%>)</span>
+                        <br>
+                        <span id="twitter-div" style="display: none"><img style="margin-left:10px;" width="30px" src="/public/images/twitter_black.png"><a target="_blank" id="twitter-content"></a></span>
                     </div>
                 </div>
             </div>

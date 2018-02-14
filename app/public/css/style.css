@@ -276,12 +276,23 @@ td.details {
     margin: 0 15px;
     color: white;
     vertical-align: middle;
-    font-size: 30px;
+    font-size: 26px;
     position: relative;
     top: -2px;
     font-weight: 500;
 }
 
+#twitter-content {
+    /*margin: 5px 15px;*/
+    color: blue !important;
+    font-size: 16px;
+}
+
+@media(max-width:767px){
+    .coin_name_buttons_name {
+        font-size: 20px;
+    }
+}
 .coin_name_buttons_name > a{
     color: white !important;
     text-decoration: underline;
@@ -360,7 +371,7 @@ a.hover {
 }
 
 canvas, #description-options {
-    background-color: #4CAF50;
+    background-color: #009ECE;
     width: 97%;
     padding: 20px;
     border-radius: 10px;
@@ -398,7 +409,7 @@ canvas, #description-options {
     top: 0;
     left: 0;
     right: 0;
-    opacity: 0.8;
+    opacity: 1;
     width: 100%;
 }
 
@@ -411,7 +422,7 @@ canvas, #description-options {
     color: #0077e2;
 }
 
-#twitter-content,#link-content {
-    color: aliceblue !important;
-    text-decoration: underline;
-}
+/*#twitter-content,#link-content {*/
+    /*color: aliceblue !important;*/
+    /*text-decoration: underline;*/
+/*}*/

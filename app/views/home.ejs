@@ -35,9 +35,8 @@
 </div>
 <% include modals.ejs%>
 <script type="text/javascript">
-   var jsonData =  JSON.parse(<%-JSON.stringify(tickers)%>);
+   var jsonData =  (<%-JSON.stringify(tickers)%>);
    var $table = $('#table');
-
    $(document).ready(function() {
        $table.bootstrapTable('load', jsonData);
    });

@@ -371,14 +371,22 @@ a.hover {
 }
 
 canvas, #description-options {
-    background-color: #009ECE;
-    width: 97%;
+    background-color: white;
     padding: 20px;
     border-radius: 10px;
     font-size: 16px;
-    color: aliceblue;
-    height: 360px !important;
+    color: black;
     overflow-y: auto;
+}
+
+canvas {
+    width: 97%;
+    height: 360px !important;
+}
+
+#description-options {
+    width: 98%;
+    height: 200px;
 }
 
 /*canvas {*/

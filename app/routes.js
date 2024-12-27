@@ -1,160 +1,164 @@
-var express = require('express');
-var router = express.Router();
-var request = require('request');
+const express = require('express');
+const router = express.Router();
+const request = require('request');
 const NodeCache = require( "node-cache" );
-var api = require("./public/config/api.json");
-var currency = require("./public/config/currency.json");
+const api = require("./public/config/api.json");
+const currency = require("./public/config/currency.json");
+const axios = require('axios');
 
-var tickerURL = api.coinmarketcap.base + api.coinmarketcap.ticker;
-var coinCapURL = api.coincap.base;
-var history = {
-    'one_day': api.coincap.history_1day,
-    'seven_day': api.coincap.history_7day,
-    'thirty_day': api.coincap.history_30day,
-    'ninety_day': api.coincap.history_90day
-};
-var coinCompare = {
+const tickerURL = api.coinmarketcap.base + api.coinmarketcap.ticker;
+const coinCapURL = api.coincap.base;
+const coinCompare = {
     "list": api.cryptoCompare.base + api.cryptoCompare.coinList,
     "details": api.cryptoCompare.base + api.cryptoCompare.coinDetails
 };
 
 const cache = new NodeCache({ stdTTL: 600} );
 
-//Middle ware that is specific to this router
-// router.use(function timeLog(req, res, next) {
-//     console.log('Time: ', Date.now());
-//     next();
-// });
 
-//Home
-router.get('/', function (req, res) {
-    render = true;
-    var tickers;
-    if(cache.get("tickers")) {
-        console.log("cached");
-        tickers = cache.get("tickers");
+router.get('/', async (req, res) => {
+    try {
+        const tickers = await getTickers();
+
+        // Render the page with tickers
         res.render('home', {
-            title : 'Home',
-            tickers : tickers
-        })
+            title: 'Home',
+            tickers: tickers
+        });
+    } catch (error) {
+        console.error("Error fetching tickers: ", error);
+        res.status(500).send("An error occurred while fetching data.");
     }
-    else {
-        request.get({ url: tickerURL+"?limit=0"},
-            function(error, response, body) {
-                console.log("caching....");
-                cache.set('tickers', body);
-                setTickerBasicInfoCache();
-                tickers = body;
-                res.render('home', {
-                    title : 'Home',
-                    tickers : tickers
-                })
-            });
-    }
-
 });
 
-router.get('/details/', function (req, res) {
-    var name = req.query.value;
+
+router.get('/details/', async  (req, res) => {
+    const name = req.query.value;
     if(name === undefined) {
         res.redirect('/');
     }
-    var tickers;
-    if(cache.get("ticker_basic_info")) {
+    let tickers;
+    if(cache.get("tickers")) {
         console.log("cached ticker");
-        tickers = cache.get("ticker_basic_info");
+        tickers = cache.get("tickers");
     }
     else {
-        request.get({ url: tickerURL+"?limit=0"},
-            function(error, response, body) {
-                tickers = JSON.parse(body);
-                console.log("caching in details...");
-                cache.set('tickers', body);
-                setTickerBasicInfoCache();
-        });
+        tickers = await getTickers();
     }
-    var id, title, symbol;
+    let id, title, symbol, display, details;
     if(tickers) {
-        for(var i = 0; i < tickers.length; i++) {
-            if(tickers[i]['name'] === name) {
-                id = tickers[i]['id'];
-                title = tickers[i]['name'];
-                symbol = tickers[i]['symbol'];
-                break;
-            }
-        }
+        display = tickers.find(ticker => ticker.name === name);
+    }
+    if(cache.get("ticker_basic_info")) {
+        console.log("cached ticker_basic_info");
+        const tickerInfo = cache.get("ticker_basic_info");
+        details = tickerInfo.find(ticker => ticker.name === name);
+
     }
     else {
         id = name.replace(/ /g,'').toLowerCase();
     }
 
-    request.get({ url: tickerURL+"/"+id},
-        function(error, response, body) {
-            res.render('currency-detail', {
-                title : title,
-                details : body,
-                display : JSON.parse(body)
-            })
-        });
+    res.render('currency-detail', {
+        title : title,
+        details : details,
+        display : [display]
+    })
 });
 
-router.get('/currency/history/', function (req, res) {
-    var symbol = req.query.value;
-    var day = req.query.day ? req.query.day : 'seven_day';
-    var coincapHistoryURL = coinCapURL + history[day];
-    console.log("calling : " + coincapHistoryURL);
-    request.get({ url: coincapHistoryURL+"/"+symbol},
-        function(error, response, body) {
-            res.send(body);
-        });
-});
-
-router.get('/currency/details/', function (req, res) {
-    var symbol = req.query.value;
-    var tickers = cache.get("ticker_basic_info");
-    for(var i = 0; i < tickers.length; i++) {
-        if(tickers[i]['symbol'] === symbol) {
-            var unique_id = tickers[i]['unique_id'];
-            break;
-        }
+router.get('/currency/history/', async (req, res) => {
+    const symbol = req.query.value.replaceAll(" ", "-");
+    const day = req.query.day ? req.query.day : 7;
+    const dayMap = {
+        'one_day': 1,
+        'seven_day': 7,
+        'thirty_day': 30,
+        'ninety_day': 90
     }
-    request.get({ url: coinCompare.details+"/?id="+unique_id},
-        function(error, response, body) {
-            res.send(body);
-        });
+    const param = dayMap[day] === 1 ? 'h1' : 'd1';
+    const coincapHistoryURL = coinCapURL + symbol.toLowerCase() + "/history?interval=" + param;
+
+
+    const response = await axios.get(coincapHistoryURL);
+    const data = response.data.data; // Axios wraps the response in a `data` object
+    const sliceParam = dayMap[day] === 1 ? -24 : -1 * dayMap[day]
+    const requiredHistory = data.slice(sliceParam);
+
+    res.send(requiredHistory);
 });
 
-function setTickerBasicInfoCache() {
-    var tickers = JSON.parse(cache.get("tickers"));
-    var tickerArray = [];
-    for(var i = 0; i < tickers.length; i++) {
+router.get('/currency/details/', async (req, res) => {
+    const symbol = req.query.value;
+    const tickers = cache.get("ticker_basic_info");
+    const unique_id = tickers.find(ticker => ticker.symbol === symbol).unique_id;
+
+    const body = await axios.get(coinCompare.details+"/?id="+unique_id);
+    res.send(body.data);
+});
+
+async function setTickerBasicInfoCache() {
+    let tickers = cache.get("tickers");
+    let tickerArray = [];
+    for(let i = 0; i < tickers.length; i++) {
         tickerArray.push({
             'id' : tickers[i]['id'],
             'name' : tickers[i]['name'],
             'symbol' : tickers[i]['symbol']
         });
     }
-    cache.set('ticker_basic_info', tickerArray, 5184000);
-    addMoreTickerBasicInfo();
+
+    await addMoreTickerBasicInfo(tickerArray);
 }
 
-function addMoreTickerBasicInfo() {
-    var tickers = cache.get("ticker_basic_info");
-    request.get({ url: coinCompare.list},
-        function(error, response, body) {
-            var info = JSON.parse(body)['Data'];
-            for(var i = 0; i < tickers.length; i++) {
-                var symbol = tickers[i]['symbol'];
-                var getInfo = info[""+ symbol];
-                if(getInfo !== undefined) {
-                    tickers[i]['url'] = getInfo.hasOwnProperty("Url") ? getInfo['Url'] : "";
-                    tickers[i]['image_url'] = getInfo.hasOwnProperty("ImageUrl") ? getInfo['ImageUrl'] : "";
-                    tickers[i]['unique_id'] = getInfo.hasOwnProperty("Id") ? getInfo['Id'] : "";
-                }
-            }
-            cache.set('ticker_basic_info', tickers, 5184000);
-        });
+async function addMoreTickerBasicInfo(tickers) {
+    const list = await axios.get(coinCompare.list);
+    const info = list.data['Data'];
+    for(let i = 0; i < tickers.length; i++) {
+        const symbol = tickers[i]['symbol'];
+        const getInfo = info["" + symbol];
+        if (getInfo !== undefined) {
+            tickers[i]['url'] = getInfo.hasOwnProperty("Url") ? getInfo['Url'] : "";
+            tickers[i]['image_url'] = getInfo.hasOwnProperty("ImageUrl") ? getInfo['ImageUrl'] : "";
+            tickers[i]['unique_id'] = getInfo.hasOwnProperty("Id") ? getInfo['Id'] : "";
+            tickers[i]['description'] = getInfo.hasOwnProperty("Description") ? getInfo['Description'] : "";
+        }
+    }
+    cache.set('ticker_basic_info', tickers, 5184000);
 }
 
+async function getTickers() {
+    const cachedTickers = cache.get("tickers");
+    if (cachedTickers) {
+        return cachedTickers;
+    }
+
+    // Fetch tickers from the API
+    console.log("Fetching tickers...");
+    const response = await axios.get(`${tickerURL}?CMC_PRO_API_KEY=${process.env.CMC_PRO_API_KEY}`);
+    const body = response.data;
+
+    // Transform data into desired format
+    const tickers = body.data.map(item => ({
+        id: item.id,
+        symbol: item.symbol,
+        rank: item.cmc_rank,
+        name: item.name,
+        market_cap_usd: item.quote.USD.market_cap,
+        price_usd: item.quote.USD.price,
+        available_supply: item.circulating_supply,
+        total_supply: item.total_supply,
+        max_supply: item.max_supply,
+        "24h_volume_usd": item.quote.USD.volume_24h,
+        percent_change_1h: item.quote.USD.percent_change_1h,
+        percent_change_24h: item.quote.USD.percent_change_24h,
+        percent_change_7d: item.quote.USD.percent_change_7d
+    }));
+
+    // Cache the fetched data
+    cache.set('tickers', tickers);
+    await setTickerBasicInfoCache();
+
+    return tickers;
+}
 
 module.exports = router;

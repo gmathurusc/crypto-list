@@ -1,6 +1,6 @@
 $(document).ready(function() {
     $('#table').on('click','.details',function () {
-        var currency = ($(this).text());
+        const currency = ($(this).text());
         if(currency !== undefined && currency.toLowerCase() !== "name"){
             window.location.href = "/details/?value="+currency;
         }
@@ -8,20 +8,15 @@ $(document).ready(function() {
 });
 
 function getHistory(symbol, day) {
-    if($('#charts').css('display') == 'none')
+    if($('#charts').css('display') === 'none')
         $('#container-loading').show();
     $.ajax({
         url: '/currency/history/?value='+symbol+'&day='+day,
         type: 'GET',
         success: function(data) {
-            var json = JSON.parse(data);
+            const json = data;
             if(json !== null) {
-                var marketCap = 'market_cap' in json ? json['market_cap'] : '';
-                var price = 'price' in json ? json['price'] : '';
-                var volume = 'volume' in json ? json['volume'] : '';
-                if(price !== '') canvasCharts('price', price);
-                if(volume !== '') canvasCharts('market-cap', marketCap);
-                if(volume !== '') canvasCharts('volume', volume);
+                canvasCharts(json);
                 $('#charts').show();
                 $('#container-loading').hide();
             }
@@ -40,7 +35,7 @@ function getCoinDetails(symbol) {
         url: '/currency/details/?value='+symbol+'&day='+day,
         type: 'GET',
         success: function(data) {
-            var json = JSON.parse(data);
+            const json = data;
             if(json !== null) {
                 setDetailsInfo(json);
             }
@@ -51,58 +46,14 @@ function getCoinDetails(symbol) {
     });
 }
 
-function googleChart(type, json) {
-    google.charts.load('current', {'packages':['corechart']});
-    google.charts.setOnLoadCallback(drawChart);
-
-    function drawChart() {
-        var data = new google.visualization.DataTable();
-
-        var legend = type === 'price' ? toTitleCase(type.replace('-', ' ')) : toTitleCase(type.replace('-', ' ') + ' ( in Billions )');
-        data.addColumn('date', 'Time');
-        data.addColumn('number', legend);
-
-        for (var i = 0; i < json.length; i++) {
-            var xAxis = new Date(json[i][0]);
-            var yAxis = type === 'price' ? json[i][1] : json[i][1] / 1000000000;
-            data.addRow([xAxis, yAxis]);
-        }
-
-        var options = {
-            title: toTitleCase(type.replace('-', ' ') + ' ( $ )'),
-            curveType : 'function',
-            legend    : { position: 'bottom' },
-            colors    : ['#337ab7'],
-            backgroundColor: "#b8d1f3",
-            vAxis:{
-                textStyle: {
-                    color: '#555'
-                },
-                baselineColor: '#fff',
-                gridlineColor: '#fff'
-            },
-            hAxis:{
-                textStyle: {
-                    color: '#555'
-                },
-                baselineColor: '#fff',
-                gridlineColor: '#fff'
-            }
-        };
-
-        var chart = new google.visualization.LineChart(document.getElementById(type+'-chart'));
-        chart.draw(data, options);
-    }
-}
-
 function setDetailsInfo(json) {
-    var desc = json.Data.General.Description;
-    var features = json.Data.General.Features;
-    var technology = json.Data.General.Technology;
-    var website = json.Data.General.Website;
-    var twitter = json.Data.General.Twitter;
-    var baseURL = json.Data.SEO.BaseUrl !== null ? json.Data.SEO.BaseUrl : "https://www.cryptocompare.com";
-    var misc = [];
+    const desc = json.Data.General.Description;
+    const features = json.Data.General.Features;
+    const technology = json.Data.General.Technology;
+    const website = json.Data.General.Website;
+    const twitter = json.Data.General.Twitter;
+    const baseURL = json.Data.SEO.BaseUrl !== null ? json.Data.SEO.BaseUrl : "https://www.cryptocompare.com";
+    const misc = [];
 
     if(desc === undefined && features === undefined && technology === undefined) {
         $('#description-options').hide();
@@ -141,106 +92,62 @@ function setDetailsInfo(json) {
     }
 
     if(twitter !== null && twitter !== "" && twitter !== undefined) {
-            if(!(/^(?:[a-z]+:)?\/\//i.test(twitter))){
+            if(!(/^(?:[a-z]+:)?\/\//i.test(twitter.URL))){
                 $("#twitter-content").attr('href', "https://twitter.com/" + twitter);
             }
             else {
-                $("#twitter-content").attr('href', twitter);
+                $("#twitter-content").attr('href', twitter.URL);
             }
-            if(!(/[@]/gi.test(twitter)))
-                twitter = '@'+twitter;
-            $("#twitter-content").text(twitter);
+            if(!(/[@]/gi.test(twitter))) {
+                const username = '@'+twitter.USERNAME;
+                $("#twitter-content").text(username);
+            }
             $("#twitter-div").show()
         }
-
-    // if(json.Data.General.Algorithm !== null)
-    //     $("#algorithm-content").html(json.Data.General.Algorithm);
-    // else
-    //     $("#algorithm-content").html("-");
-    //
-    // if(json.Data.General.Twitter !== null){
-    //     $("#twitter-content").attr('href', "https://twitter.com/" + json.Data.General.Twitter);
-    //     $("#twitter-content").text(json.Data.General.Twitter);
-    // }
-    // else
-    //     $("#twitter-content").html("-");
-    //
-    // if(json.Data.General.StartDate !== null)
-    //     $("#startdate-content").html(json.Data.General.StartDate);
-    // else
-    //     $("#startdate-content").html("-");
-    //
-    // if(json.Data.General.Sponsor.Link !== null) {
-    //     $("#link-content").attr('href', json.Data.General.Sponsor.Link);
-    //     $("#link-content").text(json.Data.General.Sponsor.Link);
-    // }
-    // else
-    //     $("#link-content").html("-");
-    //
-    // if(json.Data.General.TotalCoinsMined !== null)
-    //     $("#total-coins-mined-content").html(json.Data.General.TotalCoinsMined);
-    // else
-    //     $("#total-coins-mined-content").html("-");
 }
 
-function canvasCharts(option, json) {
-    var xAxisData = [];
-    var yAxisData = [];
-    for (var i = 0; i < json.length; i++) {
-        var xAxis = new Date(json[i][0]);
-        var yAxis = option === 'price' ? json[i][1] : json[i][1] / 1000000000;
-        xAxisData.push(xAxis);
-        yAxisData.push(yAxis);
-    }
-    var label = option === 'price' ? toTitleCase(option.replace('-', ' ')) + ' ( $ ) ' : toTitleCase(option.replace('-', ' ') + ' ( $ in Billions )');
+function canvasCharts(json) {
+    const dates = json.map(entry => new Date(entry.time).toLocaleDateString());
+    const prices = json.map(entry => parseFloat(entry.priceUsd).toFixed(2));
 
-    var chart = {
-        labels: xAxisData,
-        datasets : [
-            {
-                label: label,
-                borderColor: '#fff',
-                data: yAxisData,
-                fill: false
-            }
-        ]
-    };
-
-    var itemNode = document.getElementById(option+'-chart');
-    itemNode.parentNode.removeChild(itemNode);
-    document.getElementById(option+'-chart-div').innerHTML = '<canvas id="'+option+'-chart"></canvas>';
-    var ctx = document.getElementById(option+'-chart').getContext("2d");
-
+    // Chart.js setup
+    const ctx = document.getElementById('price-chart').getContext('2d');
     new Chart(ctx, {
         type: 'line',
-        data: chart,
-        fill: false,
+        data: {
+            labels: dates,
+            datasets: [{
+                label: 'Price in USD',
+                data: prices,
+                borderColor: 'rgba(75, 192, 192, 1)',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderWidth: 2,
+                tension: 0.3,
+                fill: true
+            }]
+        },
         options: {
-            elements: { point: { radius: 0 } },
-            legend: {
-                labels: {
-                    fontColor: "#1F2739",
-                    fontSize: 18
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top'
                 }
             },
             scales: {
-                xAxes: [{
-                    type: 'time',
-                    ticks: {
-                        fontColor: "#1F2739",
-                        fontSize: 18
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Date'
                     }
-                }],
-                yAxes: [{
-                    ticks: {
-                        fontColor: "#1F2739",
-                        fontSize: 18
-                    }
-                }]
-            },
-            tooltips: {
-                titleFontSize: 14,
-                bodyFontSize: 18
+                },
+                y: {
+                    title: {
+                        display: true,
+                        text: 'Price (USD)'
+                    },
+                    beginAtZero: false
+                }
             }
         }
     });

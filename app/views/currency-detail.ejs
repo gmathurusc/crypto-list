@@ -68,12 +68,6 @@
                 <li class="nav-item active">
                     <a class="nav-link" id="price-chart-option" data-toggle="tab" href="#price-chart-div">Price</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="volume-chart-option" data-toggle="tab" href="#volume-chart-div">Volume</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="market-cap-chart-option" data-toggle="tab" href="#market-cap-chart-div">Market Cap</a>
-                </li>
             </ul>
         </div>
 
@@ -88,12 +82,6 @@
         <div class="col-md-12 col-xs-12 margin-top-20 tab-content hidden-sm hidden-xs" id="charts">
             <div class="tab-pane active chart" id="price-chart-div">
                 <canvas id="price-chart" style=""></canvas>
-            </div>
-            <div class="tab-pane" id="volume-chart-div">
-                <canvas id="volume-chart" data-formatter="numberHumanizer" style=""></canvas>
-            </div>
-            <div class="tab-pane" id="market-cap-chart-div">
-                <canvas id="market-cap-chart" data-formatter="numberHumanizer" style=""></canvas>
             </div>
         </div>
 
@@ -145,21 +133,24 @@
 <% include partials/footer.ejs%>
 
 <script type="text/javascript">
-    var details = JSON.parse(<%-JSON.stringify(details)%>);
-    var symbol = details[0].symbol;
-    var day = getURLParams('days') ? getURLParams('days') : 'seven_day';
+    const details = <%-JSON.stringify(details)%>;
+    const display = <%-JSON.stringify(display)%>;
+    const symbol = details.symbol;
+    const name = details.name;
+
+    let day = getURLParams('days') ? getURLParams('days') : 'seven_day';
     $('option[value='+day+']').attr('selected', 'selected');
     $(document).ready(function() {
 //        windowSizeActions();
         $("#days-selector").change(function()
         {
             day = $("#days-selector option:selected").val();
-            getHistory(symbol, day);
+            getHistory(name, day);
         });
     });
 
-    if(symbol !== undefined){
-        getHistory(symbol, day);
+    if(name !== undefined){
+        getHistory(name, day);
         getCoinDetails(symbol);
     }
 </script>

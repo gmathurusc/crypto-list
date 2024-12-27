@@ -1,5 +1,5 @@
 function getURLParams(key){
-    var params={};
+    let params={};
     location.search.replace(/[?&]+([^=&]+)=([^&]*)/gi,function(s,key,value){params[key]=value});
     return key?params[key]:params;
 }
@@ -11,7 +11,7 @@ function convertRelativePathToAbsolute(div, baseURL) {
             'text-decoration' : "underline"
         });
         if(!(/^(?:[a-z]+:)?\/\//i.test($(this).attr('href')))) {
-            var url = baseURL + $(this).attr('href');
+            const url = baseURL + $(this).attr('href');
             $(this).attr('href', url);
         }
     });
@@ -35,8 +35,8 @@ $(document).ready(function(){
     });
 
     $('#hide-show-columns :checkbox').change(function () {
-        var $table = $('#table');
-        var id = $(this).attr('id');
+        const $table = $('#table');
+        const id = $(this).attr('id');
         if (this.checked) {
             $table.bootstrapTable('showColumn', id);
         } else {

@@ -10,8 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.17.1",
     "body-parser": "*",
     "bootstrap": "^3.3.7",
+    "dotenv": "^5.0.0",
     "ejs": "^2.5.7",
     "express": "^4.16.2",
     "express-validator": "^4.3.0",

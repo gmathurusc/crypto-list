@@ -1,11 +1,11 @@
 {
   "coinmarketcap" : {
-    "base": "https://api.coinmarketcap.com/v1",
-    "ticker": "/ticker/",
+    "base": "https://pro-api.coinmarketcap.com/v1",
+    "ticker": "/cryptocurrency/listings/latest",
     "global": "/global/"
   },
   "coincap" : {
-    "base" : "http://coincap.io",
+    "base" : "https://api.coincap.io/v2/assets/",
     "history_1day" : "/history/1day",
     "history_7day" : "/history/7day",
     "history_30day" : "/history/30day",

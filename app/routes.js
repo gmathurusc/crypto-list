@@ -79,7 +79,7 @@ router.get('/currency/history/', async (req, res) => {
     const coincapHistoryURL = coinCapURL + symbol.toLowerCase() + "/history?interval=" + param;
 
 
-    const response = await axios.get(coincapHistoryURL);
+    const response = await axios.get(coincapHistoryURL + "&apiKey=" + process.env.COINCAP_API_KEY);
     const data = response.data.data; // Axios wraps the response in a `data` object
     const sliceParam = dayMap[day] === 1 ? -24 : -1 * dayMap[day]
     const requiredHistory = data.slice(sliceParam);

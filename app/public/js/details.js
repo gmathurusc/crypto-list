@@ -26,6 +26,7 @@ function getHistory(symbol, day) {
         },
         error: function(e) {
             console.log(e);
+            $('#container-loading').hide();
         }
     });
 }

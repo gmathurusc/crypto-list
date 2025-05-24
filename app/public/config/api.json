@@ -5,7 +5,7 @@
     "global": "/global/"
   },
   "coincap" : {
-    "base" : "https://api.coincap.io/v2/assets/",
+    "base" : "https://rest.coincap.io/v3/assets/",
     "history_1day" : "/history/1day",
     "history_7day" : "/history/7day",
     "history_30day" : "/history/30day",

@@ -33,67 +33,82 @@ router.get('/', async (req, res) => {
 
 
 router.get('/details/', async  (req, res) => {
-    const name = req.query.value;
-    if(name === undefined) {
-        res.redirect('/');
-    }
-    let tickers;
-    if(cache.get("tickers")) {
-        console.log("cached ticker");
-        tickers = cache.get("tickers");
-    }
-    else {
-        tickers = await getTickers();
-    }
     let id, title, symbol, display, details;
-    if(tickers) {
-        display = tickers.find(ticker => ticker.name === name);
-    }
-    if(cache.get("ticker_basic_info")) {
-        console.log("cached ticker_basic_info");
-        const tickerInfo = cache.get("ticker_basic_info");
-        details = tickerInfo.find(ticker => ticker.name === name);
 
-    }
-    else {
-        id = name.replace(/ /g,'').toLowerCase();
-    }
+    try {
+        const name = req.query.value;
+        if (name === undefined) {
+            res.redirect('/');
+        }
+        let tickers;
+        if (cache.get("tickers")) {
+            console.log("cached ticker");
+            tickers = cache.get("tickers");
+        } else {
+            tickers = await getTickers();
+        }
 
+        if (tickers) {
+            display = tickers.find(ticker => ticker.name === name);
+        }
+        if (cache.get("ticker_basic_info")) {
+            console.log("cached ticker_basic_info");
+            const tickerInfo = cache.get("ticker_basic_info");
+            details = tickerInfo.find(ticker => ticker.name === name);
+
+        } else {
+            id = name.replace(/ /g, '').toLowerCase();
+        }
+
+
+    } catch (e) {
+        // Redirectg to home if error occurs
+        console.error("Error fetching history data: ", e);
+        res.status(500).send("An error occurred while fetching data.");
+    }
     res.render('currency-detail', {
-        title : title,
-        details : details,
-        display : [display]
+        title: 'currency-detail',
+        details: details,
+        display: [display]
     })
 });
 
 router.get('/currency/history/', async (req, res) => {
-    const symbol = req.query.value.replaceAll(" ", "-");
-    const day = req.query.day ? req.query.day : 7;
-    const dayMap = {
-        'one_day': 1,
-        'seven_day': 7,
-        'thirty_day': 30,
-        'ninety_day': 90
+    try {
+        const symbol = req.query.value.replaceAll(" ", "-");
+        const day = req.query.day ? req.query.day : 7;
+        const dayMap = {
+            'one_day': 1,
+            'seven_day': 7,
+            'thirty_day': 30,
+            'ninety_day': 90
+        }
+        const param = dayMap[day] === 1 ? 'h1' : 'd1';
+        const coincapHistoryURL = coinCapURL + symbol.toLowerCase() + "/history?interval=" + param;
+        const response = await axios.get(coincapHistoryURL + "&apiKey=" + process.env.COINCAP_API_KEY);
+        const data = response.data.data; // Axios wraps the response in a `data` object
+        const sliceParam = dayMap[day] === 1 ? -24 : -1 * dayMap[day]
+        const requiredHistory = data.slice(sliceParam);
+
+        res.send(requiredHistory);
+    } catch (e) {
+        console.error("Error fetching history data: ", e);
+        res.status(500).send("An error occurred while fetching data.");
     }
-    const param = dayMap[day] === 1 ? 'h1' : 'd1';
-    const coincapHistoryURL = coinCapURL + symbol.toLowerCase() + "/history?interval=" + param;
-
-
-    const response = await axios.get(coincapHistoryURL + "&apiKey=" + process.env.COINCAP_API_KEY);
-    const data = response.data.data; // Axios wraps the response in a `data` object
-    const sliceParam = dayMap[day] === 1 ? -24 : -1 * dayMap[day]
-    const requiredHistory = data.slice(sliceParam);
-
-    res.send(requiredHistory);
 });
 
 router.get('/currency/details/', async (req, res) => {
-    const symbol = req.query.value;
-    const tickers = cache.get("ticker_basic_info");
-    const unique_id = tickers.find(ticker => ticker.symbol === symbol).unique_id;
+    try {
+        const symbol = req.query.value;
+        const tickers = cache.get("ticker_basic_info");
+        const unique_id = tickers.find(ticker => ticker.symbol === symbol).unique_id;
 
-    const body = await axios.get(coinCompare.details+"/?id="+unique_id);
-    res.send(body.data);
+        const body = await axios.get(coinCompare.details + "/?id=" + unique_id);
+        res.send(body.data);
+    } catch (e) {
+        console.error("Error fetching history data: ", e);
+        res.status(500).send("An error occurred while fetching data.");
+    }
 });
 
 async function setTickerBasicInfoCache() {
